@@ -1,0 +1,12 @@
+Per-residue GB and PB decomposition
+&general
+   endframe=1, verbose=1, keep_files=0,
+/
+&gb
+   igb=5, saltcon=0.100,
+/
+&decomp
+   idecomp=1,
+   dec_verbose=0,
+   csv_format=0,
+/

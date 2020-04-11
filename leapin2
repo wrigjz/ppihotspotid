@@ -1,0 +1,5 @@
+source leaprc.protein.ff19SB
+set default PBradii mbondi2
+trx = loadpdb an_mini.pdb
+saveamberparm trx an_mini.top an_mini.crd
+quit
