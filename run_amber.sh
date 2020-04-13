@@ -8,7 +8,7 @@
 # set up the environment
 source /home/programs/amber18/amber.sh
 source /home/programs/anaconda/linux-5.3.6/init.sh
-scripts=../criti_scripts
+scripts=../critires_scripts
 
 # Need to find broken ends and add TER and ACE and NME
 /bin/rm -rf process.txt an_mini.pdb pre.pdb

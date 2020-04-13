@@ -5,7 +5,7 @@
 export hbplus=/home/programs/hbplus-3.06.linux/hbplus
 export freesasa=/home/programs/freesasa-2.03/linux/bin/freesasa
 export speedfill=/home/programs/speedfill/speedfill.linux
-export scripts=../criti_scripts
+export scripts=../critires_scripts
 export consurf_scripts=../consurf_scripts
 source /home/programs/anaconda/linux-5.3.6/init.sh
 
