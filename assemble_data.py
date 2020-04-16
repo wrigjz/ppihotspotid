@@ -118,7 +118,7 @@ for j in range(min_resnum,max_resnum+1):
             max = 5
             min =5
             consurf[j] = 0
-        print("{:>3}".format(resnumber[j]), "{:>3}".format(resname[j]), "  {:>1}".format(consurf[j]),\
+        print("{:>4}".format(resnumber[j]), "{:>3}".format(resname[j]), "  {:>1}".format(consurf[j]),\
               "{:6.1f}".format(int_stab[j]), "{:6.1f}".format(vdw_stab[j]), "{:6.1f}".format(ele_stab[j]), "{:6.1f}".format(pol_stab[j]),\
               "{:6.1f}".format(npl_stab[j]), "{:6.1f}".format(relsasa[j]),"{:6.1f}".format(gas_ene[j]), "  {:>2}".format(rank[j]),\
               "   {:>2}".format(rerank[j]), "{:>3}".format(max),  "{:>3}".format(min))

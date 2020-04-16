@@ -224,4 +224,4 @@ for WTENERGY in WTTYPE:
 
 #print(eel_ttl, eel_100, count)
 for i in range(0,count):
-     OUTPUT.write(res_type[i] + " {:>3}".format(res_number[i]) + " {:8.2f}".format(int_std[i]) + "{:8.2f}".format(vdw_std[i]) + "{:8.2f}".format(elec_std[i]) + "{:8.2f}".format(pol_std[i]) + "{:8.2f}".format(npol_std[i]) + "{:8.2f}".format(res_energy[i]) + "\n")
+     OUTPUT.write(res_type[i] + " {:>4}".format(res_number[i]) + " {:8.2f}".format(int_std[i]) + "{:8.2f}".format(vdw_std[i]) + "{:8.2f}".format(elec_std[i]) + "{:8.2f}".format(pol_std[i]) + "{:8.2f}".format(npol_std[i]) + "{:8.2f}".format(res_energy[i]) + "\n")
