@@ -186,9 +186,29 @@ for WTENERGY in WTTYPE:
     if test < 10:  # Line is not long enough
         continue
     if found == 1:
-        resname, resid, in3, internal, in5, in6, in7, vdw, in9, in10, in11, elec, in13, in14, in15, pol, in17, in18, in19, npol, in21 ,in22, in23, total, *junk = [x.strip() for x in WTENERGY.split()]
-        #print(resname, resid, VDWTAB[resname])
-        #print(resname, "{:>3}".format(resid), "{:8.2f}".format(energy), "{:8.2f}".format(unfolded),"{:8.2f}".format(stability))
+# We can not use split here because the number of residues can be > 10000
+        temp1 = WTENERGY[0:3]
+        temp2 = temp1.strip()
+        resname = str(temp2)
+        temp1 = WTENERGY[3:8]
+        temp2 = temp1.strip()
+        resid = int(temp2)
+        temp1 = WTENERGY[9:19]
+        temp2 = temp1.strip()
+        internal = float(temp2)
+        temp1 = WTENERGY[31:41]
+        temp2 = temp1.strip()
+        vdw = float(temp2)
+        temp1 = WTENERGY[53:63]
+        temp2 = temp1.strip()
+        elec = float(temp2)
+        temp1 = WTENERGY[75:85]
+        temp2 = temp1.strip()
+        pol = float(temp2)
+        temp1 = WTENERGY[97:107]
+        temp2 = temp1.strip()
+        npol = float(temp2)
+        print(resname,resid,internal,vdw,elec,pol,npol)
         res_type[count]   = resname
         res_number[count] = resid
         vdw_std[count]    = float(vdw)      - float(VDWTAB[resname])

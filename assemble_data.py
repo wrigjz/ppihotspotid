@@ -11,22 +11,26 @@
 # each range so it is more like a bell shaped curve
 
 import sys
-# We initiall setup for only 1000 residues
-resname   = [0 for i in range(0,1000)]
-resnumber = [0 for i in range(0,1000)]
-relsasa   = [0 for i in range(0,1000)]
-int_stab  = [0 for i in range(0,1000)]
-vdw_stab  = [0 for i in range(0,1000)]
-ele_stab  = [0 for i in range(0,1000)]
-pol_stab  = [0 for i in range(0,1000)]
-npl_stab  = [0 for i in range(0,1000)]
-consurf   = [0 for i in range(0,1000)]
-gas_ene   = [0 for i in range(0,1000)]
-rank      = [0 for i in range(0,1000)]
-rerank    = [1 for i in range(0,1000)]
-position  = [0 for i in range(0,1000)]
+# Get a line count for the arrays we need
+num_lines = 1
+num_lines += sum(1 for lines in open("wild_relsasa.txt","r"))
+
+# And then setup the arrays
+resname   = [0 for i in range(0,num_lines)]
+resnumber = [0 for i in range(0,num_lines)]
+relsasa   = [0 for i in range(0,num_lines)]
+int_stab  = [0 for i in range(0,num_lines)]
+vdw_stab  = [0 for i in range(0,num_lines)]
+ele_stab  = [0 for i in range(0,num_lines)]
+pol_stab  = [0 for i in range(0,num_lines)]
+npl_stab  = [0 for i in range(0,num_lines)]
+consurf   = [0 for i in range(0,num_lines)]
+gas_ene   = [0 for i in range(0,num_lines)]
+rank      = [0 for i in range(0,num_lines)]
+rerank    = [1 for i in range(0,num_lines)]
+position  = [0 for i in range(0,num_lines)]
 max_resnum = 0
-min_resnum = 1000
+min_resnum = num_lines
 
 # Get the number of residues from the sasa file and the relative sasa value
 INFILE = open("wild_relsasa.txt","r")
