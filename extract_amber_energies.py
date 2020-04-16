@@ -208,7 +208,7 @@ for WTENERGY in WTTYPE:
         temp1 = WTENERGY[97:107]
         temp2 = temp1.strip()
         npol = float(temp2)
-        print(resname,resid,internal,vdw,elec,pol,npol)
+        #print(resname,resid,internal,vdw,elec,pol,npol)
         res_type[count]   = resname
         res_number[count] = resid
         vdw_std[count]    = float(vdw)      - float(VDWTAB[resname])

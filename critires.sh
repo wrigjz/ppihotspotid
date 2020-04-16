@@ -13,7 +13,7 @@ source /home/programs/anaconda/linux-5.3.6/init.sh
 grep '^ATOM  ' input.pdb | cut -c22-22|head -1 >| original_chain.txt
 $scripts/run_amber.sh
 
-python3 $scripts/extract_amber_energies.py >| stability.txt
+python3 $scripts/extract_amber_energies.py
 sed -i 's/HETATM/ATOM  /' wild.pdb
 
 # At this point we need to run consurf if we do not already have a consurf.grades file
