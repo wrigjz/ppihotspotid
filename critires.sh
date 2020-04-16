@@ -51,9 +51,3 @@ $scripts/set_numbers.sh
 python3 $scripts/find_stable_unstable.py >| results_ambnum.txt
 PYTHONPATH=. python3 $scripts/print_results.py >| results.txt
 
-# Save the consurf150sp data
-/bin/mv assemble.txt assemble150sp.txt
-/bin/mv initial.grades initial150sp.grades
-/bin/mv wild_consurf.txt wild_consurf150sp.txt
-/bin/mv results_ambnum.txt results_ambnum150sp.txt
-/bin/mv results.txt results150sp.txt

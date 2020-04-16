@@ -114,8 +114,7 @@ for j in range(min_resnum,max_resnum+1):
         max = rerank[j] + consurf[j] 
         min = rerank[j] - consurf[j] 
         # We set ACE/NME max/min to 5 and consurf to 0 to ignore them
-        if resname[j] == "ACE" or resname[j] == "NME" or \
-           resname[j-1] == "ACE" or resname[j+1] == "NME": 
+        if resname[j] == "ACE" or resname[j] == "NME":
             max = 5
             min =5
             consurf[j] = 0
