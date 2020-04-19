@@ -12,7 +12,9 @@ scripts=../critires_scripts
 
 # Need to find broken ends and add TER and ACE and NME
 /bin/rm -rf process.txt an_mini.pdb pre.pdb
-cp input.pdb pre.pdb   # copy the pdb to a standard name to start with
+# copy the pdb to a standard name to start with and remove hydrogens
+#cp input.pdb pre.pdb   # copy the pdb to a standard name to start with
+python3 $scripts/remove_h.py input.pdb pre.pdb
 $AMBERHOME/bin/pdb4amber --reduce pre.pdb -o process.pdb > process.txt 2>&1
 python $scripts/find_gaps.py process.pdb process.txt process1.pdb
 $AMBERHOME/bin/tleap -f $scripts/leapin0
@@ -23,7 +25,12 @@ python $scripts/add_chain.py wild.pdb temp.pdb; mv temp.pdb wild.pdb
 
 # start the actual amber/fed process
 $AMBERHOME/bin/tleap -f $scripts/leapin1
-$AMBERHOME/bin/sander -O -i $scripts/sander.in -p an.top -c an.crd  -ref an.crd -o an_mini.out -r an_mini.res
+
+export mpirun=/usr/local/openmpi-2.0.0_gcc48/bin/mpirun
+$mpirun -n `wc -l < $PBS_NODEFILE` -machinefile $PBS_NODEFILE \
+    $AMBERHOME/bin/sander.MPI -O -i $scripts/sander.in -p an.top -c an.crd -ref an.crd -o an_mini.out -r an_mini.res
+#$AMBERHOME/bin/sander -O -i $scripts/sander.in -p an.top -c an.crd -ref an.crd -o an_mini.out -r an_mini.res
+
 $AMBERHOME/bin/ambpdb -p an.top -c an_mini.res > an_mini.pdb
 python $scripts/add_chain.py an_mini.pdb wild_mini.pdb
 $AMBERHOME/bin/tleap -f $scripts/leapin2
