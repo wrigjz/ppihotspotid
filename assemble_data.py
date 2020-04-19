@@ -111,8 +111,8 @@ for k in range(0,10):
 # Print out the results table
 print("Resi Ty cons   int    vdw    ele    pol    npl   sasa  gas_e rank  rern max min")
 for j in range(min_resnum,max_resnum+1):
-        max = rerank[j] + consurf[j] 
-        min = rerank[j] - consurf[j] 
+        max = rank[j] + consurf[j] 
+        min = rank[j] - consurf[j] 
         # We set ACE/NME max/min to 5 and consurf to 0 to ignore them
         if resname[j] == "ACE" or resname[j] == "NME":
             max = 5
