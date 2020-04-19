@@ -77,8 +77,9 @@ for TMLINE in INFILE:
                 print (single, end = "")
             else: 
                 print (".", end = "")
-            if single !="X": r4sindex+=1
-            outline = "    '" + "{:>d}".format(r4sindex) + "' : '" + "{:>d}".format(index) + "' ,\n"
-            OUTFILE.write(outline)
+            if single !="X":
+                r4sindex+=1
+                outline = "    '" + "{:>d}".format(r4sindex) + "' : '" + "{:>d}".format(index) + "' ,\n"
+                OUTFILE.write(outline)
 print ("") # print a newline to end the sequence output
 OUTFILE.write("}")
