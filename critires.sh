@@ -1,5 +1,10 @@
 #!/bin/bash
-
+#########################################################################################################################
+## and Jon Wright, IBMS, Academia Sinica, Taipei, 11529, Taiwan
+## These files are licensed under the GLP ver 3, essentially you have the right
+## to copy, modify and distribute this script but all modifications must be offered
+## back to the original authors
+#########################################################################################################################
 # Simple script to perform a critires job
 
 export hbplus=/home/programs/hbplus-3.06.linux/hbplus
@@ -17,8 +22,8 @@ python3 $scripts/extract_amber_energies.py
 sed -i 's/HETATM/ATOM  /' wild.pdb
 
 # At this point we need to run consurf if we do not already have a consurf.grades file
-$consurf_scripts/consurf_home.sh
-python $scripts/get_consurf_home.py initial.grades wild_consurf.txt
+#$consurf_scripts/consurf_home.sh
+#python $scripts/get_consurf_home.py initial.grades wild_consurf.txt
 # Or the alternative is to use the Consurf website grades
 #python ../$scripts/get_consurf_web.py  consurf.grades wild_consurf.txt
 

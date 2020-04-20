@@ -1,4 +1,10 @@
 #!/bin./python
+#########################################################################################################################
+## and Jon Wright, IBMS, Academia Sinica, Taipei, 11529, Taiwan
+## These files are licensed under the GLP ver 3, essentially you have the right
+## to copy, modify and distribute this script but all modifications must be offered
+## back to the original authors
+#########################################################################################################################
 import sys
 
 # This file will read the AMBER MM_PBSA DECOMP files, it then calculates 

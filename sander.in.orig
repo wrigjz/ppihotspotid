@@ -1,8 +1,8 @@
 minimize structure
  &cntrl
-   imin=1, ncyc=500, maxcyc=500
-   cut=999.0, igb=2, saltcon=0.0, gbsa=1,
-   ntpr=100, ntx=1, ntb=0,
+   imin=1, maxcyc=500
+   cut=999.0, igb=1, saltcon=0.0, gbsa=1,
+   ntpr=10, ntx=1, ntb=0, ncyc   = 500,
    ntr=1,
    &end
 GROUP TITLE
@@ -16,6 +16,6 @@ FIND
 * O2 * *
 * CB * *
 SEARCH
-RES 1 9999
+RES 1 999
 END
 END

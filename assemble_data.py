@@ -1,5 +1,10 @@
 #!/usr/bin/python3
-
+#########################################################################################################################
+## and Jon Wright, IBMS, Academia Sinica, Taipei, 11529, Taiwan
+## These files are licensed under the GLP ver 3, essentially you have the right
+## to copy, modify and distribute this script but all modifications must be offered
+## back to the original authors
+#########################################################################################################################
 # Simple script to try to assemble data for the critires project
 # In Backys method for the Energy values she takes the number of residues and divides by 10
 # she then assigns the lowest 10% rank 1, .. next lowest 10% rank 2 .. to rank 9 
