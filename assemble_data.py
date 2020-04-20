@@ -87,7 +87,7 @@ for j in range(min_resnum,max_resnum+1):
     rank[j] = 10
     for k in range(0,10):
         if gas_ene[j] > (lower + (bin_width * k)):
-            rank[j] = k +1
+            rank[j] = 10 - k
 
 # Here try to sort the residues based on gas_energies, posiiton should now run from lowest E to highest E
 #for j in range(0,i):
@@ -110,14 +110,14 @@ for k in range(0,10):
     upper_loop=int(band_width * (k+1)) + 1
     #print("lower",lower_loop, upper_loop,k)
     for j in range(lower_loop,upper_loop):
-        rerank[position[j]] = k +1
+        rerank[position[j]] = 10 - k
         
 
 # Print out the results table
 print("Resi Ty cons   int    vdw    ele    pol    npl   sasa  gas_e rank  rern max min")
 for j in range(min_resnum,max_resnum+1):
-        max = rank[j] + consurf[j] 
-        min = rank[j] - consurf[j] 
+        max = rerank[j] + consurf[j] 
+        min = rerank[j] - consurf[j] 
         # We set ACE/NME max/min to 5 and consurf to 0 to ignore them
         if resname[j] == "ACE" or resname[j] == "NME":
             max = 5

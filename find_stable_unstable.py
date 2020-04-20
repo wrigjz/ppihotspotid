@@ -85,26 +85,25 @@ min_number = min_array[2][3]
 index_st = -1
 index_un = -1
 
-#print("Unstable conserved")
-for i in range(0,merged_list_len):
-    if min_array[i][3] <= min_number:
-        index_un += 1
-        name   = min_array[i][1]
-        number = min_array[i][0]
-        print("{:>3},".format(name), "{:>3},".format(number),"Stable")
-        stable_name[index_un]   = name
-        stable_number[index_un] = int(number)
-
 #print("Stable conserved")
 for i in range(0,merged_list_len):
     if max_array[i][2] >= max_number:
         index_st += 1
         name   = max_array[i][1]
         number = max_array[i][0]
-        print("{:>3},".format(name), "{:>3},".format(number),"Unstable")
-        unstable_name[index_st]   = name
-        unstable_number[index_st] = int(number)
+        print("{:>3},".format(name), "{:>3},".format(number),"Stable")
+        stable_name[index_st]   = name
+        stable_number[index_st] = int(number)
 
+#print("Unstable conserved")
+for i in range(0,merged_list_len):
+    if min_array[i][3] <= min_number:
+        index_un += 1
+        name   = min_array[i][1]
+        number = min_array[i][0]
+        print("{:>3},".format(name), "{:>3},".format(number),"Unstable")
+        unstable_name[index_un]   = name
+        unstable_number[index_un] = int(number)
 
 # Okay now we look for stable ----vdw --- unstable pairs
 # Start by reading in the NB2 file
