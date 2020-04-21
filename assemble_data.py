@@ -32,7 +32,7 @@ npl_stab  = [0 for i in range(0,num_lines)]
 consurf   = [0 for i in range(0,num_lines)]
 gas_ene   = [0 for i in range(0,num_lines)]
 rank      = [0 for i in range(0,num_lines)]
-rerank    = [1 for i in range(0,num_lines)]
+grade    = [1 for i in range(0,num_lines)]
 position  = [0 for i in range(0,num_lines)]
 max_resnum = 0
 min_resnum = num_lines
@@ -103,21 +103,21 @@ while unsorted == 1:
     if unsorted == 0:
         break
 
-# Now we need to rerank according to the energies, equal # of residues in each band
+# Now we need to grade according to the energies, equal # of residues in each band
 band_width = (max_resnum-min_resnum)/10  # We are sorting into 10 groups
 for k in range(0,10):
     lower_loop=int(band_width * k)
     upper_loop=int(band_width * (k+1)) + 1
     #print("lower",lower_loop, upper_loop,k)
     for j in range(lower_loop,upper_loop):
-        rerank[position[j]] = 10 - k
+        grade[position[j]] = 10 - k
         
 
 # Print out the results table
-print("Resi Ty cons   int    vdw    ele    pol    npl   sasa  gas_e rank  rern max min")
+print("Resi Ty cons   int    vdw    ele    pol    npl   sasa  gas_e  rank grade max min")
 for j in range(min_resnum,max_resnum+1):
-        max = rerank[j] + consurf[j] 
-        min = rerank[j] - consurf[j] 
+        max = grade[j] + consurf[j] 
+        min = grade[j] - consurf[j] 
         # We set ACE/NME max/min to 5 and consurf to 0 to ignore them
         if resname[j] == "ACE" or resname[j] == "NME":
             max = 5
@@ -126,4 +126,4 @@ for j in range(min_resnum,max_resnum+1):
         print("{:>4}".format(resnumber[j]), "{:>3}".format(resname[j]), "  {:>1}".format(consurf[j]),\
               "{:6.1f}".format(int_stab[j]), "{:6.1f}".format(vdw_stab[j]), "{:6.1f}".format(ele_stab[j]), "{:6.1f}".format(pol_stab[j]),\
               "{:6.1f}".format(npl_stab[j]), "{:6.1f}".format(relsasa[j]),"{:6.1f}".format(gas_ene[j]), "  {:>2}".format(rank[j]),\
-              "   {:>2}".format(rerank[j]), "{:>3}".format(max),  "{:>3}".format(min))
+              "   {:>2}".format(grade[j]), "{:>3}".format(max),  "{:>3}".format(min))

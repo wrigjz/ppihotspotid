@@ -40,7 +40,7 @@ npl_stab  = [0 for i in range(0,index)]
 consurf   = [0 for i in range(0,index)]
 gas_ene   = [0 for i in range(0,index)]
 rank      = [0 for i in range(0,index)]
-rerank    = [1 for i in range(0,index)]
+grade    = [1 for i in range(0,index)]
 max_value = [0 for i in range(0,index)]
 min_value = [0 for i in range(0,index)]
 stable_name     = [0 for i in range(0,index)]
@@ -57,7 +57,7 @@ for LINE in INFILE:
         index += 1
         resnumber[index], resname[index], in3, int_stab[index], vdw_stab[index], \
             ele_stab[index], pol_stab[index], npl_stab[index], in0, gas_ene[index], rank[index], \
-            rerank[index], in1, in2 = [x.strip() for x in LINE.split()]
+            grade[index], in1, in2 = [x.strip() for x in LINE.split()]
         consurf[index]      = int(in3)
         relsasa[index]      = float(in0)
         max_value[index]    = int(in1)
@@ -80,8 +80,9 @@ min_array = sorted(merged_list, key=lambda x: x[3])
 # to make sure there is a minimum of 3 printed
 # So get the max and min value for the 3rd ranked residue, 
 # then look for residues with a higher or equal max value, and residue with a lower or equal min value
-max_number = max_array[2][2]
-min_number = min_array[2][3]
+max_number = max_array[3][2]
+min_number = min_array[3][3]
+#print(max_number, min_number)
 index_st = -1
 index_un = -1
 
