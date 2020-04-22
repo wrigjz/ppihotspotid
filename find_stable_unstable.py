@@ -6,7 +6,7 @@
 ## back to the original authors
 #########################################################################################################################
 # Simple script to try take the assembled data
-# and then locate the top 3 (or equal) Max and bottom 3 (or equal) min values
+# and then locate the top 4 (or equal) Max and bottom 4 (or equal) min values
 # from column 14 and 15
 # discard any that have a sasa < a cutoff
 # then look for any Stable residues vdw bonded to an Unstable residue
@@ -76,9 +76,9 @@ min_array = sorted(merged_list, key=lambda x: x[3])
 
 #pprint(min_array)
 
-# At this point we need to print out at the very least the top 3 residues and then any residues with equal scores
-# to make sure there is a minimum of 3 printed
-# So get the max and min value for the 3rd ranked residue, 
+# At this point we need to print out at the very least the top 4 residues and then any residues with equal scores
+# to make sure there is a minimum of 4 printed
+# So get the max and min value for the 4rd ranked residue, 
 # then look for residues with a higher or equal max value, and residue with a lower or equal min value
 max_number = max_array[3][2]
 min_number = min_array[3][3]
