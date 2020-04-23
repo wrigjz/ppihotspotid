@@ -50,7 +50,7 @@ for TMLINE in INPDB:
     # If we find a TER line we then write out the corresponding ACE #
     if TMLINE[0:3] == "TER":
         OUTPDB.write(TMLINE)
-        for i in range(1,index):  # This bit of code looks for previously saved ACE lines and write out the right one
+        for i in range(1,index+1):  # This bit of code looks for previously saved ACE lines and write out the right one
             resid_check = ace_resid[i]
             if resid_check == saved_id:
                 OUTPDB.write(ace[i]+"\n")
