@@ -21,11 +21,12 @@ $scripts/run_amber.sh
 python3 $scripts/extract_amber_energies.py
 sed -i 's/HETATM/ATOM  /' wild.pdb
 
-# At this point we need to run consurf if we do not already have a consurf.grades file
-#$consurf_scripts/consurf_home.sh
-#python $scripts/get_consurf_home.py initial.grades wild_consurf.txt
-# Or the alternative is to use the Consurf website grades
-#python ../$scripts/get_consurf_web.py  consurf.grades wild_consurf.txt
+# At this point we need to run consurf if we do not already have a consurf.grades file, use the two lines below
+$consurf_scripts/consurf_home.sh
+python3 $scripts/get_consurf_home.py initial.grades wild_consurf.txt
+# Or the alternative is to use the Consurf website grades, in which case use these two lines below
+#python3 ../$scripts/get_consurf_numbers.py wild_mini.pdb 
+#PYTHONPATH=. python3 ../$scripts/get_consurf_web.py consurf.grades wild_consurf.txt
 
 # Sort out the SASA values
 $freesasa --config-file $scripts/protor.config --format=seq wild_mini.pdb >| wild.sasa
@@ -54,5 +55,7 @@ python3 $scripts/assemble_data.py >| assemble.txt
 /bin/rm -rf results_ambnum.txt results.txt
 $scripts/set_numbers.sh
 python3 $scripts/find_stable_unstable.py >| results_ambnum.txt
-PYTHONPATH=. python3 $scripts/print_results.py >| results.txt
-
+#PYTHONPATH=. python3 $scripts/print_results.py >| results.txt
+PYTHONPATH=. python3 $scripts/print_results.py | grep Stable   | sort -g -k 2 >| results.txt
+PYTHONPATH=. python3 $scripts/print_results.py | grep Unstable | sort -g -k 2 >> results.txt
+PYTHONPATH=. python3 $scripts/print_results.py | grep Bridge   | sort -g -k 2 >> results.txt

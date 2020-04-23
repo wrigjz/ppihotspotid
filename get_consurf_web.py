@@ -23,10 +23,11 @@ OUTFILE = open(sys.argv[2],"w")
 
 # Open the hash for sequence to wild-mini.pdb renumbering scheme
 from r4s_pdb import R4S_2_PDB
-
+seqnum = 0
 for TMLINE in INFILE:
     if TMLINE[18:19] == ":":
-        seqnum = TMLINE[0:4].strip()    # read in the consurf sequence number
-        original = (R4S_2_PDB.get(seqnum)) # get the 'original' resnumber from the wild_mini pdb file for CS
+        seqnum += 1  # increment the consurf sequence number
+        seqnum_str = str(seqnum) # Done this way to be compatitble with Jon's own CS server
+        original = (R4S_2_PDB.get(seqnum_str)) # get the 'original' resnumber from the wild_mini pdb file for CS
         score     = TMLINE[31:32]
         OUTFILE.write(" {:>4}".format(original) + " {:>3}".format(score) + "\n")
