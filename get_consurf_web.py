@@ -6,16 +6,27 @@
 ## back to the original authors
 #########################################################################################################################
 import sys
+import os
 
-# Simple script to print out the consurf grades
+# Simple script to print out the consurf grades, taken from the web site and then renumbered
+# to match the critires internal numbering scheme
 #   1       N        ASN2:X      -0.329            6     -0.744,-0.136                       8,5                   37/150        D,N,L
 
+# Get the output name from the command line
+if len(sys.argv) <= 2:
+    print("Usage: get_consurf_web.py consurf_file output_file\n")
+    sys.exit(0)
+
+# Open input and output files
 INFILE  = open(sys.argv[1],"r")
 OUTFILE = open(sys.argv[2],"w")
+
+# Open the hash for sequence to wild-mini.pdb renumbering scheme
+from r4s_pdb import R4S_2_PDB
+
 for TMLINE in INFILE:
-    if TMLINE[18:20] == ":X":
-        namechain = TMLINE[11:18].strip()    # read in the name, resid number
-        length    = len(namechain)           # find the combined length of the name/number
-        number    = namechain[3:length]      # extract the number only
+    if TMLINE[18:19] == ":":
+        seqnum = TMLINE[0:4].strip()    # read in the consurf sequence number
+        original = (R4S_2_PDB.get(seqnum)) # get the 'original' resnumber from the wild_mini pdb file for CS
         score     = TMLINE[31:32]
-        OUTFILE.write(" {:>3}".format(number) + " {:>3}".format(score) + "\n")
+        OUTFILE.write(" {:>4}".format(original) + " {:>3}".format(score) + "\n")
