@@ -23,7 +23,7 @@ sed -i 's/HETATM/ATOM  /' wild.pdb
 
 # At this point we need to run consurf if we do not already have a consurf.grades file, 
 # use the two lines below
-$consurf_scripts/consurf_pdb.sh wild_mini.pdb P
+$consurf_scripts/consurf_home.sh wild_mini.pdb
 python3 $scripts/get_consurf_home.py initial.grades wild_consurf.txt
 # Or the alternative is to use the Consurf website grades, in which case use these 
 # two lines below
