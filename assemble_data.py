@@ -121,12 +121,12 @@ for k in range(0, 10):
 # Print out the results table
 print("Resi Ty cons   int    vdw    ele    pol    npl   sasa  gas_e  rank grade max min")
 for j in range(MIN_RESNUM, MAX_RESNUM+1):
-    maxi = GRADE[j] + CONSURF[j]
-    mini = GRADE[j] - CONSURF[j]
+    res_max = GRADE[j] + CONSURF[j]
+    res_min = GRADE[j] - CONSURF[j]
     # We set ACE/NME max/min to 5 and CONSURF to 0 to ignore them
     if RESNAME[j] == "ACE" or RESNAME[j] == "NME":
-        maxi = 5
-        mini = 5
+        res_max = 5
+        res_min = 5
         CONSURF[j] = 0
     print("{:>4}".format(RESNUMBER[j]), "{:>3}".format(RESNAME[j]), \
           "  {:>1}".format(CONSURF[j]), "{:6.1f}".format(INT_STAB[j]), \
@@ -134,4 +134,4 @@ for j in range(MIN_RESNUM, MAX_RESNUM+1):
           "{:6.1f}".format(POL_STAB[j]), "{:6.1f}".format(NPL_STAB[j]), \
           "{:6.1f}".format(RELSASA[j]), "{:6.1f}".format(GAS_ENE[j]), \
           "  {:>2}".format(RANK[j]), "   {:>2}".format(GRADE[j]), \
-          "{:>3}".format(max), "{:>3}".format(min))
+          "{:>3}".format(res_max), "{:>3}".format(res_min))
