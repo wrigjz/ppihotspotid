@@ -1,4 +1,4 @@
-#1/bin/bash
+#!/bin/bash
 ###################################################################################################
 ## Jon Wright, IBMS, Academia Sinica, Taipei, 11529, Taiwan
 ## These files are licensed under the GLP ver 3, essentially you have the right
