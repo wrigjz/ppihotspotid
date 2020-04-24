@@ -28,7 +28,7 @@ for TMLINE in INPDB:
     if TMLINE[12:16] == " H2 ":  # This also covers the NPRO case
         INDEX += 1
         resid_long = TMLINE[22:26]
-        resid = resid_long.replACE(" ", "") # Remove whitespACE from resid
+        resid = resid_long.replace(" ", "") # Remove whitespACE from resid
         resid = int(resid) - 1
         ACE[INDEX] = TMLINE[0:13] + "C   ACE  " + "{:>4}".format(resid) + "B" + TMLINE[27:66]
         ACE_RESID[INDEX] = resid
