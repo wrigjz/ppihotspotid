@@ -19,33 +19,32 @@ grep '^ATOM  ' input.pdb | cut -c22-22|head -1 >| original_chain.txt
 $scripts/run_amber.sh
 
 python3 $scripts/extract_amber_energies.py
-sed -i 's/HETATM/ATOM  /' wild.pdb
 
 # At this point we need to run consurf if we do not already have a consurf.grades file, 
 # use the two lines below
-$consurf_scripts/consurf_home.sh wild_mini.pdb
-python3 $scripts/get_consurf_home.py initial.grades wild_consurf.txt
+$consurf_scripts/consurf_home.sh post_mini.pdb
+python3 $scripts/get_consurf_home.py initial.grades consurf.txt
 # Or the alternative is to use the Consurf website grades, in which case use these 
 # two lines below
-#python3 ../$scripts/get_consurf_numbers.py wild_mini.pdb 
-#PYTHONPATH=. python3 ../$scripts/get_consurf_web.py consurf.grades wild_consurf.txt
+#python3 ../$scripts/get_consurf_numbers.py post_mini.pdb 
+#PYTHONPATH=. python3 ../$scripts/get_consurf_web.py consurf.grades consurf.txt
 
 # Sort out the SASA values
-$freesasa --config-file $scripts/protor.config --format=seq wild_mini.pdb >| wild.sasa
-python3 $scripts/sasa_to_perc.py wild.sasa | awk '{print $3", "$4", "$8}' >| wild_relsasa.txt
+$freesasa --config-file $scripts/protor.config --format=seq post_minix.pdb >| post_mini.sasa
+python3 $scripts/sasa_to_perc.py post_mini.sasa | awk '{print $3", "$4", "$8}' >| post_mini.relsasa
 
 # Prepare a non-H atom version for hbplus/speedfill
-python3 $scripts/remove_h.py wild_mini.pdb wild_noh.pdb
-sed -i -e 's/CYX/CYS/' -e 's/HID/HIS/' -e 's/HIE/HIS/' -e 's/HIP/HIS/' wild_noh.pdb
+python3 $scripts/remove_h.py post_minix.pdb post_mini_noh.pdb
+sed -i -e 's/CYX/CYS/' -e 's/HID/HIS/' -e 's/HIE/HIS/' -e 's/HIP/HIS/' post_mini_noh.pdb
 
 ## Run speedfill - probably not needed
 #if [ | -e "CATHPARAM" ]; then
 #     echo 'No much here' >| CATHPARAM
 #fi
-#$speedfill -f wild_noh.pdb -d ntop 10 -log
+#$speedfill -f post_mini_noh.pdb -d ntop 10 -log
 
 # Run HBPLUS - needed for the vdw matrix
-$hbplus wild_noh.pdb -h 2.9 -d 4 -N -c
+$hbplus post_mini_noh.pdb -h 2.9 -d 4 -N -c
 
 ## This is for Jon's binding progrect
 #touch wild_bind.txt # needed for checking on binding sites

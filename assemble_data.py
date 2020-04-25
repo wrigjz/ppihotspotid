@@ -17,7 +17,7 @@
 
 # Get a line count for the arrays we need
 NUM_LINES = 1
-NUM_LINES += sum(1 for lines in open("wild_relsasa.txt", "r"))
+NUM_LINES += sum(1 for lines in open("post_mini.relsasa", "r"))
 
 # And then setup the arrays
 RESNAME = [0 for i in range(0, NUM_LINES)]
@@ -37,7 +37,7 @@ MAX_RESNUM = 0
 MIN_RESNUM = NUM_LINES
 
 # Get the number of residues from the sasa file and the relative sasa value
-INFILE = open("wild_relsasa.txt", "r")
+INFILE = open("post_mini.relsasa", "r")
 for LINE in INFILE:
     in1, in2, in3, *junk = [x.strip() for x in LINE.split(",")]
     resnum = int(in1)
@@ -47,7 +47,7 @@ for LINE in INFILE:
 INFILE.close()
 
 # Now we allocate the CONSURF values
-INFILE = open("wild_consurf.txt", "r")
+INFILE = open("consurf.txt", "r")
 for LINE in INFILE:
     in1, in2 = [x.strip() for x in LINE.split()]
     resnum = int(in1)

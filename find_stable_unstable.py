@@ -110,7 +110,7 @@ for i in range(0, MERGED_LIST_LEN):
 #X0002-PRO N   X0001-ACE CH3 2.46 MH  -2 -1.00  -1.0 -1.00  -1.0  27.8     1
 # Get an idea of the potential number of lines we will be dealing with
 INDEX_NB2 = -1
-NB2FILE = open("wild_noh.nb2", "r")
+NB2FILE = open("post_mini_noh.nb2", "r")
 for LINE in NB2FILE:
     if LINE[0:1] == "X":
         INDEX_NB2 += 1
