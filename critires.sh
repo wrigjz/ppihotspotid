@@ -56,7 +56,7 @@ python3 $scripts/assemble_data.py >| assemble.txt
 /bin/rm -rf results_ambnum.txt results.txt
 $scripts/set_numbers.sh
 python3 $scripts/find_stable_unstable.py >| results_ambnum.txt
-#PYTHONPATH=. python3 $scripts/print_results.py >| results.txt
+PYTHONPATH=. python3 $scripts/print_results.py >| results.txt
 PYTHONPATH=. python3 $scripts/print_results.py | grep Stable   | sort -g -k 2 >| results.txt
 PYTHONPATH=. python3 $scripts/print_results.py | grep Unstable | sort -g -k 2 >> results.txt
 PYTHONPATH=. python3 $scripts/print_results.py | grep Bridge   | sort -g -k 2 >> results.txt

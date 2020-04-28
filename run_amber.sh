@@ -22,7 +22,9 @@ scripts=../critires_scripts
 # copy the pdb to a standard name to start with and remove hydrogens
 #cp input.pdb initial.pdb   # copy the pdb to a standard name to start with
 python3 $scripts/remove_h.py input.pdb initial.pdb
-$AMBERHOME/bin/pdb4amber --reduce initial.pdb -o process.pdb > process.txt 2>&1
+
+# Run with --reduce to get an idea of HIS protonation states
+$AMBERHOME/bin/pdb4amber --reduce initial.pdb -o process.pdb >| process.txt 2>&1
 python $scripts/find_gaps.py process.pdb process.txt process1.pdb
 
 $AMBERHOME/bin/tleap -f $scripts/leapin0
@@ -32,7 +34,7 @@ python3 $scripts/find_terminal.py process2.pdb processed.pdb
 $AMBERHOME/bin/tleap -f $scripts/leapin1
 
 # Run this to get the renumbering scheme we need later
-$AMBERHOME/bin/pdb4amber processed.pdb -o pre_mini.pdb  > pre_mini.txt 2>&1
+$AMBERHOME/bin/pdb4amber processed.pdb -o pre_mini.pdb  >| pre_mini.txt 2>&1
 
 export mpirun=/usr/local/openmpi-2.0.0_gcc48/bin/mpirun
 $mpirun -n `wc -l < $PBS_NODEFILE` -machinefile $PBS_NODEFILE \
@@ -41,7 +43,7 @@ $mpirun -n `wc -l < $PBS_NODEFILE` -machinefile $PBS_NODEFILE \
 #$AMBERHOME/bin/sander -O -i $scripts/sander.in -p pre_mini.top -c pre_mini.crd -ref pre_mini.crd \
 #       -o post_mini.out -r post_mini.res
 
-$AMBERHOME/bin/ambpdb -p pre_mini.top -c post_mini.res > post_mini.pdb
+$AMBERHOME/bin/ambpdb -p pre_mini.top -c post_mini.res >| post_mini.pdb
 python $scripts/add_chain.py post_mini.pdb post_minix.pdb
 $AMBERHOME/bin/tleap -f $scripts/leapin2
 $AMBERHOME/bin/MMPBSA.py -O -i $scripts/mm_pbsa.in -o FINAL_RESULTS_MMPBSA_wt.dat \

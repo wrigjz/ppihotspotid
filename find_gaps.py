@@ -33,7 +33,7 @@ for LINE in PROCESS:
     if gap == "gap" and resid1 != resid2:
         if float(dist) >= 3.3:  # big enough gap to terminal with ACE/NME
             INDEX += 1
-            UPPER[INDEX] = int(resid2)
+            UPPER[INDEX] = str(resid2)
             print("Terminating INDEX: ", INDEX, " Before: ", UPPER[INDEX])
 
 # Now process the PDB file, when we find the UPPER residue for the 1st time
@@ -45,7 +45,7 @@ for TMLINE in INPDB:
         resid_long = TMLINE[23:27]
         resid = resid_long.replace(" ", "") # Remove whitespace from resid
         for i in range(0, INDEX+1):
-            if int(resid) == UPPER[i] and TMLINE[12:15] == " N ":
+            if str(resid) == UPPER[i] and TMLINE[12:15] == " N ":
                 OUTPDB.write("TER\n")
                 print("Performing: ", i)
         OUTPDB.write(TMLINE)
