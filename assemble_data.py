@@ -128,6 +128,12 @@ for j in range(MIN_RESNUM, MAX_RESNUM+1):
         res_max = 5
         res_min = 5
         CONSURF[j] = 0
+# If we want to make the gap terminal less table use the lines below
+    #if j > (MIN_RESNUM + 1) and j < (MAX_RESNUM - 1):
+    #    if RESNAME[j+1] == "NME" and RESNAME[j+2] == "ACE":
+    #        res_min = res_min -1
+    #    if RESNAME[j-1] == "ACE" and RESNAME[j-2] == "NME":
+    #        res_min = res_min -1
     print("{:>4}".format(RESNUMBER[j]), "{:>3}".format(RESNAME[j]), \
           "  {:>1}".format(CONSURF[j]), "{:6.1f}".format(INT_STAB[j]), \
           "{:6.1f}".format(VMD_STAB[j]), "{:6.1f}".format(ELE_STAB[j]), \
