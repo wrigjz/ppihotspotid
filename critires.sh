@@ -28,7 +28,8 @@ python3 $scripts/extract_amber_energies.py
 # Or if you want to run it locally using the SEQRES records use these lines
 # But you make make sure that original.pdb and original_chain.txt exist
 $consurf_scripts/consurf_seqres.sh post_mini.pdb
-PYTHONPATH=. python3 $scripts/get_consurf_seqres.py seqres.fasta cons.fasta seqres.grades >| consurf.txt
+PYTHONPATH=. python3 $scripts/get_consurf_seqres.py seqres.fasta cons.fasta \
+             seqres.grades consurf.txt >| seqres.txt
 # Or the alternative is to use the Consurf website grades, in which case use these 
 # two lines below
 #python3 ../$scripts/get_consurf_numbers.py post_mini.pdb 

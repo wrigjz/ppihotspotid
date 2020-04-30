@@ -23,14 +23,14 @@ from Bio import pairwise2
 # Read in the original PDB numbering scheme if the file exists
 from r4s_pdb import R4S_2_PDB
 
-if len(sys.argv) != 4:
-    print("Please give seqres fasta file, the atoms fasta file and the grades files.")
+if len(sys.argv) != 5:
+    print("Please give seqres fasta file, the atoms fasta file, the grades files and output file.")
     exit()
 
 TARGETFILE = open(sys.argv[1], "r")
 INFILE = open(sys.argv[2], "r")
 GRADESFILE = open(sys.argv[3], "r")
-OUTFILE = open("seqres.txt", "w")
+OUTFILE = open(sys.argv[4], "w")
 
 INDEX = -1
 TITLE0 = ""
