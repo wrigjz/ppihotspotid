@@ -68,7 +68,7 @@ for i in TEMP[0][1]:
     counter = SEQRES_INDEX + 1 # needed becasue python starts are zero
     if TEMP[0][1][SEQRES_INDEX] != "-": # Only consider ones that are aligned with the ATOMS
         GRADESFILE.seek(0) # Rewind the grades file
-        for LINE in GRADESFILE: # Find the 'right' residue in the eqres.grades file
+        for LINE in GRADESFILE: # Find the 'right' residue in the seqres.grades file
             number, single, triple, number1, grade, value = [x.strip() for x in LINE.split()]
             if number != "#": # Ignore the frist line of the grades file
                 if int(number) == counter:
