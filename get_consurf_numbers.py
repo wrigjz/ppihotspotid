@@ -5,10 +5,9 @@
 ## to copy, modify and distribute this script but all modifications must be offered
 ## back to the original authors
 ###################################################################################################
-#This take a PDB file and then creates a file with a fasta format for a single chain
-# It will ouput ACE/NME as X
-# and write another file that allows for the final consurf numbering
-# to be related back to the initial PDB file
+#This take a PDB file and # and write another file that allows for the final consurf numbering
+# to be related back to the initial PDB file, it is really only used if you used
+# the consurf website to get the grades file
 
 import sys
 
