@@ -15,7 +15,7 @@ export consurf_scripts=../consurf_scripts
 source /home/programs/anaconda/linux-5.3.6/init.sh
 
 # Start off by running preparing the PDB files and running AMBER
-grep '^ATOM  ' input.pdb | cut -c22-22|head -1 >| original_chain.txt
+grep '^ATOM  ' input.pdb | head -1 | cut -c22-22 >| original_chain.txt
 $scripts/run_amber.sh
 
 python3 $scripts/extract_amber_energies.py
@@ -44,12 +44,6 @@ python3 $scripts/sasa_to_perc.py post_mini.sasa | awk '{print $3", "$4", "$8}' >
 # Prepare a non-H atom version for hbplus/speedfill
 python3 $scripts/remove_h.py post_minix.pdb post_mini_noh.pdb
 sed -i -e 's/CYX/CYS/' -e 's/HID/HIS/' -e 's/HIE/HIS/' -e 's/HIP/HIS/' post_mini_noh.pdb
-
-## Run speedfill - probably not needed
-#if [ | -e "CATHPARAM" ]; then
-#     echo 'No much here' >| CATHPARAM
-#fi
-#$speedfill -f post_mini_noh.pdb -d ntop 10 -log
 
 # Run HBPLUS - needed for the vdw matrix
 $hbplus post_mini_noh.pdb -h 2.9 -d 4 -N -c
