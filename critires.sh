@@ -23,15 +23,17 @@ python3 $scripts/extract_amber_energies.py
 # At this point we need to run consurf if we do not already have a consurf.grades file, 
 # use the two lines below to run it using the ATOM records to get the sequence
 # This is the prefered option
-#$consurf_scripts/consurf_home.sh post_mini.pdb
-#python3 $scripts/get_consurf_home.py initial.grades consurf.txt
+$consurf_scripts/consurf_home.sh post_mini.pdb
+PYTHONPATH=. python3 $scripts/get_consurf_home.py initial.grades consurf.txt
+
 # Or if you want to run it locally using the SEQRES records use these lines
 # But you make make sure that original.pdb and original_chain.txt exist
-$consurf_scripts/consurf_seqres.sh post_mini.pdb
-PYTHONPATH=. python3 $scripts/get_consurf_seqres.py seqres.fasta cons.fasta \
-             seqres.grades consurf.txt >| seqres.txt
+#$consurf_scripts/consurf_seqres.sh post_mini.pdb
+#PYTHONPATH=. python3 $scripts/get_consurf_seqres.py seqres.fasta cons.fasta \
+#             seqres.grades consurf.txt >| seqres.txt
+
 # Or the alternative is to use the Consurf website grades, in which case use these 
-# two lines below
+# lines below
 #python3 ../$scripts/get_consurf_numbers.py post_mini.pdb 
 #PYTHONPATH=. python3 ../$scripts/get_consurf_web.py consurf.grades consurf.txt
 

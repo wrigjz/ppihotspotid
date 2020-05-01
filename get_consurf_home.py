@@ -6,6 +6,11 @@
 ## back to the original authors
 ###################################################################################################
 import sys
+# THis script retrieves the consurf grades and matches them with the pdb
+# that we sent to out version of consurf
+
+# Open the hash for sequence to pre_mini.pdb renumbering scheme
+from r4s_pdb import R4S_2_PDB
 
 # Simple script to print out the consurf grades
 #  # SEQ 3LETT PDB COLOUR  SCORE
@@ -16,4 +21,5 @@ OUTFILE = open(sys.argv[2], "w")
 for LINE in INFILE:
     in1, in2, in3, pdbnum, grade, in6 = [x.strip() for x in LINE.split()]
     if in1 != "#":
-        OUTFILE.write(" {:>3}".format(pdbnum) + " {:>3}".format(grade) + "\n")
+        original = (R4S_2_PDB.get(pdbnum)) # get the consurf input pdb' resnumber
+        OUTFILE.write(" {:>4}".format(original) + " {:>3}".format(grade) + "\n")
