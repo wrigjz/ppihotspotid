@@ -9,7 +9,6 @@
 
 export hbplus=/home/programs/hbplus-3.06.linux/hbplus
 export freesasa=/home/programs/freesasa-2.03/linux/bin/freesasa
-export speedfill=/home/programs/speedfill/speedfill.linux
 export scripts=../critires_scripts
 export consurf_scripts=../consurf_scripts
 source /home/programs/anaconda/linux-5.3.6/init.sh
@@ -41,7 +40,7 @@ PYTHONPATH=. python3 $scripts/get_consurf_home.py initial.grades consurf.txt
 $freesasa --config-file $scripts/protor.config --format=seq post_minix.pdb >| post_mini.sasa
 python3 $scripts/sasa_to_perc.py post_mini.sasa | awk '{print $3", "$4", "$8}' >| post_mini.relsasa
 
-# Prepare a non-H atom version for hbplus/speedfill
+# Prepare a non-H atom version for hbplus
 python3 $scripts/remove_h.py post_minix.pdb post_mini_noh.pdb
 sed -i -e 's/CYX/CYS/' -e 's/HID/HIS/' -e 's/HIE/HIS/' -e 's/HIP/HIS/' post_mini_noh.pdb
 

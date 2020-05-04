@@ -6,11 +6,12 @@
 ## back to the original authors
 ###################################################################################################
 This is a reimplimentation of CritiRes in python ver 3+, such as anaconda
+Requirements are AmberTools, hbplus and FreeSASA
 
 the directory structure should be something like this
 
 top/critires_scripts
-   /consurf_script
+   /consurf_script (If you want to use our consurf version)
    /pdbidchain            e.g. 1fnfa
               /input.pdb   this is a single chain from a pdb file
 
