@@ -56,6 +56,6 @@ for TMLINE in INPDB:
             if resid_check == saved_id:
                 OUTPDB.write(ACE[i]+"\n")
     if TMLINE[13:16] == "OXT":  # Change this to a NME group
-        #resid_long  = TMLINE[23:27]
+        #resid_long  = TMLINE[22:26]
         fred = TMLINE[0:13] + "N   NME   " + TMLINE[23:26] + "A" + TMLINE[27:66]
         OUTPDB.write(fred+"\n")
