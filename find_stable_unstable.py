@@ -7,11 +7,12 @@
 ###################################################################################################
 # Simple script to try take the assembled data
 # and then locate the top 4 (or equal) Max and bottom 4 (or equal) min values
-# from column 14 and 15
-# discard any that have a sasa < a cutoff
-# then look for any Stable residues vdw bonded to an Unstable residue
-# Then look for any other residues (SASA > cutoff) that is vdw bonded to the Stab/UnStab pairs
-
+# from column 14 and 15, we discard any that have a sasa < a cutoff
+#
+# We then look for any Stable residues vdw bonded to any Unstable residues (Matrix pair)
+# Then look for any other residues (SASA > cutoff) that are vdw bonded to 
+# either of the Stab/UnStab matrix pairs - we call these Bridge residues
+#
 # Stable are the low numbers e.g. energy rank - high consurf = v negative (min)
 # Unstable are the high numbers e.g. energy rank + high consurf = v positive (max)
 
@@ -197,4 +198,4 @@ for line in NETWORK1:
     # Need to use -1 below because python arrays start at 0
     if RELSASA[line-1] > SASA_CUTOFF and CONSURF[line-1] == 9: # only print if relasas > cutoff,
                                                                 # and consurf = 9
-        print("{:>3},".format(RESNAME[line-1]), "{:>3},".format(RESNUMBER[line-1]), "Bridge")
+        print("{:>3},".format(RESNAME[line-1]), "{:>4},".format(RESNUMBER[line-1]), "Bridge")
