@@ -65,7 +65,7 @@ for TMLINE in INFILE:
         resname = TMLINE[17:20]
         atom_name = TMLINE[12:16]
         chain = TMLINE[21:22]
-        resid_long = str(TMLINE[22:26])
+        resid_long = str(TMLINE[22:27])
         # This block looks for a change in the residue number  , and prints out the 1 letter codes
         if PREVIOUS_RESNO != resid_long:
             INDEX += 1

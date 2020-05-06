@@ -27,7 +27,7 @@ ACE_RESID = ["" for i in range(0, 100)]
 for TMLINE in INPDB:
     if TMLINE[12:16] == " H2 ":  # This also covers the NPRO case
         INDEX += 1
-        resid_long = TMLINE[22:26]
+        resid_long = TMLINE[22:26] # We shouldn't need to worry about A/B residues
         resid = resid_long.replace(" ", "") # Remove whitespACE from resid
         resid = int(resid) - 1
         ACE[INDEX] = TMLINE[0:13] + "C   ACE  " + "{:>4}".format(resid) + "B" + TMLINE[27:66]
@@ -46,7 +46,7 @@ for TMLINE in INPDB:
                              and TMLINE[12:16] != " H1 " and TMLINE[12:16] != " H3 ":
         saved_line = TMLINE
         OUTPDB.write(TMLINE)
-        saved_id = int(TMLINE[22:26])
+        saved_id = int(TMLINE[22:26]) # We shouldn't need to worry about A/B residues
     # If we find a TER line we then write out the corresponding ACE #
     if TMLINE[0:3] == "TER":
         OUTPDB.write(TMLINE)
@@ -56,6 +56,6 @@ for TMLINE in INPDB:
             if resid_check == saved_id:
                 OUTPDB.write(ACE[i]+"\n")
     if TMLINE[13:16] == "OXT":  # Change this to a NME group
-        #resid_long  = TMLINE[22:26]
+        #resid_long  = TMLINE[22:26] # We shouldn't need to worry about A/B residues
         fred = TMLINE[0:13] + "N   NME   " + TMLINE[23:26] + "A" + TMLINE[27:66]
         OUTPDB.write(fred+"\n")

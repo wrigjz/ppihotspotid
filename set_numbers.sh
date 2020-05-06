@@ -9,6 +9,6 @@
 # It is run after Amber has capped the gaps etc
 
 echo "NUMBERS = {" >| numbers.py
-grep -v ACE pre_mini_renum.txt |grep -v NME|paste - process_renum.txt| \
+grep -v ACE pre_mini_renum.txt |grep -v NME|paste - renumber.txt| \
        awk '{print "\x27"$4"\x27 : \x27"$6"\x27 ,"}' >> numbers.py
 echo "}" >> numbers.py

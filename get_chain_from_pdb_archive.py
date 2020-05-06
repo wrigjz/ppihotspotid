@@ -23,7 +23,7 @@ for LIST in LISTFILE:
     pdbchain = pdblc + chainlc
     tempin = pdbchain + "/original.pdb"
     middle = pdblc[1:3]
-    tempout = pdbchain + "/initial.pdb"
+    tempout = pdbchain + "/input.pdb"
     if not os.path.exists(pdbchain):
         os.mkdir(pdbchain)
     if os.path.exists(tempin):

@@ -42,7 +42,7 @@ for TMLINE in INPDB:
     if TMLINE[0:6] == "CONECT":
         continue
     if TMLINE[0:4] == "ATOM":
-        resid_long = TMLINE[22:26]
+        resid_long = TMLINE[22:26] # We shouldn't need to worry about A/B residues
         resid = resid_long.replace(" ", "") # Remove whitespace from resid
         for i in range(0, INDEX+1):
             if str(resid) == UPPER[i] and TMLINE[12:15] == " N ":

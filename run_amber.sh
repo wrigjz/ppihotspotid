@@ -21,7 +21,7 @@ scripts=../critires_scripts
 
 # copy the pdb to a standard name to start with and remove hydrogens
 #cp input.pdb initial.pdb   # copy the pdb to a standard name to start with
-python3 $scripts/remove_h.py input.pdb initial.pdb
+python3 $scripts/remove_h.py input.pdb initial.pdb > renumber.txt
 
 # Run with --reduce to get an idea of HIS protonation states
 $AMBERHOME/bin/pdb4amber --reduce initial.pdb -o process.pdb >| process.txt 2>&1
