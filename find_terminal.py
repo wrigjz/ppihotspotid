@@ -57,5 +57,5 @@ for TMLINE in INPDB:
                 OUTPDB.write(ACE[i]+"\n")
     if TMLINE[13:16] == "OXT":  # Change this to a NME group
         #resid_long  = TMLINE[22:26] # We shouldn't need to worry about A/B residues
-        fred = TMLINE[0:13] + "N   NME   " + TMLINE[23:26] + "A" + TMLINE[27:66]
+        fred = TMLINE[0:13] + "N   NME  " + TMLINE[22:26] + "A" + TMLINE[27:66]
         OUTPDB.write(fred+"\n")
