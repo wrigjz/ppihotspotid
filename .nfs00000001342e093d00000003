@@ -18,8 +18,10 @@ scripts=../critires_scripts
 # Need to find broken ends and add TER and ACE and NME
 /bin/rm -rf process.txt post_mini.pdb initial.pdb
 
-# renumber the pdb and make it a standard name to start with, plus remove hydrogens
-python3 $scripts/renum_rm_h.py input.pdb initial.pdb renumber.txt
+
+# copy the pdb to a standard name to start with and remove hydrogens
+#cp input.pdb initial.pdb   # copy the pdb to a standard name to start with
+python3 $scripts/remove_h.py input.pdb initial.pdb
 
 # Run with --reduce to get an idea of HIS protonation states
 $AMBERHOME/bin/pdb4amber --reduce initial.pdb -o process.pdb >| process.txt 2>&1

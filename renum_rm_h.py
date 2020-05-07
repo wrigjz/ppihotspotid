@@ -8,12 +8,13 @@
 import sys
 
 # A simple script to remove hydrogen atoms from a PDB file and renumber it from one
-# at the same time while printing out the renumerbing scheme
+# at the same time while writing out the renumerbing scheme
 #
-# usage python3 remove_h.py input.pdb initial.pdb > renumber.txt
+# usage python3 remove_h.py input.pdb initial.pdb renumber.txt
 
 INFILE = open(sys.argv[1], "r")
 OUTFILE = open(sys.argv[2], "w")
+RENFILE = open(sys.argv[3], "w")
 
 RESID = 0
 PREVIOUS = -999
@@ -29,8 +30,9 @@ for LINE in INFILE:
         if pdbresin != PREVIOUS: # increment the pdb number if a new reisdue
             RESID += 1
             PREVIOUS = pdbresin
-            print("{:>4s}".format(resname), "{:>5s}".format(pdbresin), \
-                  "{:>4s}".format(resname), "{:>4d}".format(RESID))
+            RENUMBER="{:>4s}".format(resname) + "{:>5s}".format(pdbresin) + \
+                     "{:>4s}".format(resname) + "{:>5d}".format(RESID) + "\n"
+            RENFILE.write(RENUMBER)
         if word[0:1] != "H":
             RESOUT = "{:>4s}".format(str(RESID))
             LINEOUT = LINE[0:22] + RESOUT + " " + LINE[27:80] + "\n"
