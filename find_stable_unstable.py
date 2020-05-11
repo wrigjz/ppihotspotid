@@ -120,7 +120,7 @@ RESIDUE2 = [0 for i in range(0, INDEX_NB2+1)]
 NETWORK = [0 for i in range(0, INDEX_NB2+1)]
 NB2FILE.seek(0)
 
-# Now read in the vdw pairs fro the nb2 file and discard duplicates
+# Now read in the vdw pairs from the nb2 file and discard duplicates
 INDEX_NB2 = -1
 for LINE in NB2FILE:
     if LINE[0:1] == "X":
