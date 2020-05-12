@@ -20,9 +20,10 @@
 # 10% to grade 10, then next 10% to grade 9 and so on until all the remaining
 # residues are assigned to grade 1
 #
-# We set the Energy RANK of ACE/NME and their neighbours to 5 and their consuef values to 0
-# to make sure these are not selected later on
-# At the moment Max and Min use grade not rank
+# When we calculate the Max/Min values we set the Energy Rank/grades of the ACE/NME to 5 and 
+# their consurf values to 0 to make sure these are not selected later on
+#
+# At the moment Max and Min are calculated using grade not rank
 
 # Get a line count for the arrays we need
 NUM_LINES = 1
