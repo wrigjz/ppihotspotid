@@ -28,13 +28,13 @@ for TMLINE in INPDB:
     if TMLINE[12:16] == " H2 ":  # This also covers the NPRO case
         INDEX += 1
         resid_long = TMLINE[22:26] # We shouldn't need to worry about A/B residues
-        resid = resid_long.replace(" ", "") # Remove whitespACE from resid
+        resid = resid_long.replace(" ", "") # Remove whitespace from resid
         resid = int(resid) - 1
         ACE[INDEX] = TMLINE[0:13] + "C   ACE  " + "{:>4}".format(resid) + "B" + TMLINE[27:66]
         ACE_RESID[INDEX] = resid
 
 
-# We also need to find the 1H atom for 1st residue each time and change that to ACe
+# We also need to find the H2 atom for 1st residue each time and change that to ACE
 # When we find an OXT we convert that to NME
 #ATOM    605  C   ACE    36B     68.635  22.680  59.599  1.00  0.00
 INPDB.seek(0)

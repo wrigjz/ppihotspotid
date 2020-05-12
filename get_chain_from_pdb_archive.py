@@ -1,9 +1,14 @@
-#!/usr/bin/python
-# Simple program to read PDB codes with chain eg 1tsr B and then copies that pdb file
-# and extracts the chain to a new pdb file in a directory named
-# after the pdb code and chain e.g. for 1STR chain B your would get
-# 1tsrb/original.pdb 1tsrb/1tsrb.pdb
-
+#!/usr/bin/python3
+# Simple program to read a file with PDB codes with a chain ID eg 1tsr B and then
+# retrieves that pdb file and calls it 'original.pdb' and then extracts the chain to
+# another pdb file called 'input.pdb' in a directory named after the pdb code and chain
+# e.g. for 1TSR chain B, 1a5w chain A you could have a file called 'list.txt' containing
+# 1TSR B
+# 1a5w A
+# you can run then python3 get_chain_from_pdb.py list.txt
+# which will give:
+# 1tsrb/original.pdb 1tsrb/input.pdb
+# 1a5ea/original.pdb 1a5ea/input.pdb
 
 import sys
 import os
