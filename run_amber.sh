@@ -22,8 +22,7 @@ scripts=../critires_scripts
 python3 $scripts/renum_rm_h.py input.pdb initial.pdb renumber.txt
 
 # Run with --reduce to get an idea of HIS protonation states
-$AMBERHOME/bin/pdb4amber --reduce initial.pdb -o process.pdb >| process.txt 2>&1
-sed -i -e 's/^TER/TEE/' process.pdb # Remove reduced added TERs
+$AMBERHOME/bin/pdb4amber --reduce --noter initial.pdb -o process.pdb >| process.txt 2>&1
 python $scripts/find_gaps.py process.pdb process.txt process1.pdb
 
 $AMBERHOME/bin/tleap -f $scripts/leapin0
