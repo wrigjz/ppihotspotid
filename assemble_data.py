@@ -6,14 +6,23 @@
 ## back to the original authors
 ###################################################################################################
 # Simple script to try to assemble data for the critires project
-# In Backys method for the Energy values she takes the number of residues and divides by 10
-# she then assigns the lowest 10% RANK 1, .. next lowest 10% RANK 2 .. to RANK 9
-# then all the rest get assigned as value 10
-# We set the Energy RANK of ACE/NME and their enighbours to 5 and their consuef values to 0
+# In this method we take gas nergy values (calc's as the energy in the chain - the standard energy
+# of the residue as a Me-X-Me triad
+# Firstly we take the energy for each residue and sort them from lowest to highest
+#
+# We then do two different ways of ranking them:
+#
+# Rank: We take the gas energy range (highest gas energy - lowest gas energy) and divide that
+# into 10 equal energy ranges, residues are then placed into the group that their gas energy 
+# falls into, the lowest gas energy residues into rank 10, the highest into rank 1
+#
+# Grade: Take the number of residues and devide by 10, we then assign the lowest gas energy
+# 10% to grade 10, then next 10% to grade 9 and so on until all the remaining
+# residues are assigned to grade 1
+#
+# We set the Energy RANK of ACE/NME and their neighbours to 5 and their consuef values to 0
 # to make sure these are not selected later on
-
-# Here we try to block the energies into 9 equal sized energy ranges and assign residues to
-# each range so it is more like a bell shaped curve
+# At the moment Max and Min use grade not rank
 
 # Get a line count for the arrays we need
 NUM_LINES = 1
