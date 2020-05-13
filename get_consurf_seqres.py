@@ -6,11 +6,11 @@
 ## back to the original authors
 ##################################################################################################
 #
-# This script reads a seqres fasta file and one from the atoms and aligns them
-# it allows us to use the seqres for a consurf run and obtain the results
-# for the residues present in the pdb file from a third consurf results file
-# calculated using Jon's method
-
+# This script reads both a seqres fasta file and another one from the atoms and aligns them
+# This allows us to use the seqres for a consurf run and obtain the results for the residues
+# present in the pdb file from a third consurf results file calculated using our own consurf
+# method
+#
 # usage:
 # python3 select_seqs.py seqres.fasta atomlisted.fasta consurf.grades
 # This requires that mk_fasta.py was used in order to create the atomlisted.faste

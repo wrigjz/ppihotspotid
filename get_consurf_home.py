@@ -6,8 +6,8 @@
 ## back to the original authors
 ###################################################################################################
 import sys
-# THis script retrieves the consurf grades and matches them with the pdb
-# that we sent to out version of consurf
+# THis script retrieves the consurf grades and matches them with the pdb file
+# that we used with our own version of consurf
 
 # Open the hash for sequence to pre_mini.pdb renumbering scheme
 from r4s_pdb import R4S_2_PDB

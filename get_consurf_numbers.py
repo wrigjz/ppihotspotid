@@ -5,9 +5,10 @@
 ## to copy, modify and distribute this script but all modifications must be offered
 ## back to the original authors
 ###################################################################################################
-#This take a PDB file and # and write another file that allows for the final consurf numbering
+#
+# This take a PDB file and writes another file that allows for the final consurf numbering
 # to be related back to the initial PDB file, it is really only used if you used
-# the consurf website to get the grades file
+# the official consurf website to get the grades file
 
 import sys
 
