@@ -13,14 +13,14 @@
 # We then do two different ways of ranking them:
 #
 # Rank: We take the gas energy range (highest gas energy - lowest gas energy) and divide that
-# into 10 equal energy ranges, residues are then placed into the group that their gas energy 
+# into 10 equal energy ranges, residues are then placed into the group that their gas energy
 # falls into, the lowest gas energy residues into rank 10, the highest into rank 1
 #
 # Grade: Take the number of residues and devide by 10, we then assign the lowest gas energy
 # 10% to grade 10, then next 10% to grade 9 and so on until all the remaining
 # residues are assigned to grade 1
 #
-# When we calculate the Max/Min values we set the Energy Rank/grades of the ACE/NME to 5 and 
+# When we calculate the Max/Min values we set the Energy Rank/grades of the ACE/NME to 5 and
 # their consurf values to 0 to make sure these are not selected later on
 #
 # At the moment Max and Min are calculated using grade not rank
@@ -124,6 +124,8 @@ BAND_WIDTH = (MAX_RESNUM-MIN_RESNUM)/10  # We are sorting into 10 groups
 for k in range(0, 10):
     lower_loop = int(BAND_WIDTH * k)
     upper_loop = int(BAND_WIDTH * (k+1)) + 1
+    if lower_loop != 0: # First time we need to allow for the 0th element
+        lower_loop += 1 # After this we need to +1 tp the index, same as upper_loop
     #print("lower",lower_loop, upper_loop,k)
     for j in range(lower_loop, upper_loop):
         GRADE[POSITION[j]] = 10 - k
