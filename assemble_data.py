@@ -120,7 +120,8 @@ while UNSORTED == 1:
         break
 
 # Now we need to GRADE according to the energies, equal # of residues in each band
-BAND_WIDTH = (MAX_RESNUM-MIN_RESNUM)/10  # We are sorting into 10 groups
+BAND_WIDTH = ((MAX_RESNUM - MIN_RESNUM) + 1 ) / 10  # We are sorting into 10 groups
+#print(MAX_RESNUM,MIN_RESNUM,BAND_WIDTH)
 for k in range(0, 10):
     lower_loop = int(BAND_WIDTH * k)
     upper_loop = int(BAND_WIDTH * (k+1)) + 1
