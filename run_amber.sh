@@ -11,7 +11,7 @@
 # followed by an internal energy evaluation for each residue
 
 # set up the environment
-source /home/programs/amber18/amber.sh
+source /home/programs/ambertools20/amber20/amber.sh
 source /home/programs/anaconda/linux-5.3.6/init.sh
 scripts=../critires_scripts
 
