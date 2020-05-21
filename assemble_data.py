@@ -103,8 +103,8 @@ for j in range(MIN_RESNUM, MAX_RESNUM+1):
             RANK[j] = 10 - k
 
 # Here we use a tuple to sort the gas phase energies and remove 0th element
-GAS_LIST = tuple(zip(RESNUMBER, GAS_ENE))
-GAS_LIST1 = list(filter(lambda a: a[0] > 0, GAS_LIST))
+GAS_LIST = tuple(zip(RESNUMBER, GAS_ENE, RESNAME))
+GAS_LIST1 = list(filter(lambda a: a[2] != 0, GAS_LIST))
 # Sort that tuple by the gas energy value, and get number of elements
 SORTED_GAS = sorted(GAS_LIST1, key=lambda x: x[1])
 NUM_OF_ELEMENTS = len(SORTED_GAS)
@@ -131,12 +131,6 @@ for j in range(MIN_RESNUM, MAX_RESNUM+1):
         res_max = 5
         res_min = 5
         CONSURF[j] = 0
-# If we want to make the gap terminal less table use the lines below
-    #if j > (MIN_RESNUM + 1) and j < (MAX_RESNUM - 1):
-    #    if RESNAME[j+1] == "NME" and RESNAME[j+2] == "ACE":
-    #        res_min = res_min -1
-    #    if RESNAME[j-1] == "ACE" and RESNAME[j-2] == "NME":
-    #        res_min = res_min -1
     print("{:>4}".format(RESNUMBER[j]), "{:>3}".format(RESNAME[j]), \
           "  {:>1}".format(CONSURF[j]), "{:6.1f}".format(INT_STAB[j]), \
           "{:6.1f}".format(VMD_STAB[j]), "{:6.1f}".format(ELE_STAB[j]), \
