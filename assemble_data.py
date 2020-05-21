@@ -42,7 +42,6 @@ CONSURF = [0 for i in range(0, NUM_LINES)]
 GAS_ENE = [0 for i in range(0, NUM_LINES)]
 RANK = [0 for i in range(0, NUM_LINES)]
 GRADE = [1 for i in range(0, NUM_LINES)]
-POSITION = [0 for i in range(0, NUM_LINES)]
 MAX_RESNUM = 0
 MIN_RESNUM = NUM_LINES
 
@@ -75,7 +74,6 @@ for LINE in INFILE:
     ELE_STAB[resnum] = float(in3)
     POL_STAB[resnum] = float(in4)
     NPL_STAB[resnum] = float(in5)
-    POSITION[resnum] = resnum
     if MAX_RESNUM < resnum:
         MAX_RESNUM = resnum
     if MIN_RESNUM > resnum:
@@ -104,29 +102,24 @@ for j in range(MIN_RESNUM, MAX_RESNUM+1):
         if GAS_ENE[j] > (lower + (BIN_WIDTH * k)):
             RANK[j] = 10 - k
 
-# Here try to sort the residues based on GAS_ENErgies, position should now run from
-# lowest E to highest E
-UNSORTED = 1
-while UNSORTED == 1:
-    UNSORTED = 0
-    for k in range(MIN_RESNUM, MAX_RESNUM): # Start at 1 so resnum 0 is not sorted into the middle
-        if GAS_ENE[POSITION[k]] > GAS_ENE[POSITION[k+1]]:
-            temp_pos = POSITION[k]
-            POSITION[k] = POSITION[k+1]
-            POSITION[k+1] = temp_pos
-            UNSORTED = 1
-    if UNSORTED == 0:
-        break
+# Here we use a tuple to sort the gas phase energies and remove 0th element
+GAS_LIST = tuple(zip(RESNUMBER, GAS_ENE))
+GAS_LIST1 = list(filter(lambda a: a[0] > 0, GAS_LIST))
+# Sort that tuple by the gas energy value, and get number of elements
+SORTED_GAS = sorted(GAS_LIST1, key=lambda x: x[1])
+NUM_OF_ELEMENTS = len(SORTED_GAS)
 
 # Now we need to GRADE according to the energies, equal nos of residues in each band
-BAND_WIDTH = ((MAX_RESNUM - MIN_RESNUM) + 1) / 10  # We are sorting into 10 groups
+BAND_WIDTH = int(NUM_OF_ELEMENTS  / 10)  # We are sorting into 10 groups
 #print(MAX_RESNUM,MIN_RESNUM,BAND_WIDTH)
 for k in range(0, 10):
-    lower_loop = int(BAND_WIDTH * k) + 1 # Element 0 is not used, we start at 1
-    upper_loop = int(BAND_WIDTH * (k+1)) + 1
+    lower_loop = int(BAND_WIDTH * k)
+    upper_loop = int(BAND_WIDTH * (k+1))
+    if k == 9:
+        upper_loop = NUM_OF_ELEMENTS
     #print("lower",lower_loop, "upper",upper_loop,"round",k)
     for j in range(lower_loop, upper_loop):
-        GRADE[POSITION[j]] = 10 - k
+        GRADE[SORTED_GAS[j][0]] = 10 - k
 
 # Print out the results table
 print("Resi Ty cons   int    vdw    ele    pol    npl   sasa   gas_e  rank grade max min")
