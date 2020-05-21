@@ -127,12 +127,13 @@ for k in range(0, 10):
     upper_loop = int(BAND_WIDTH * (k+1)) + 1
     if lower_loop != 0: # First time we need to allow for the 0th element
         lower_loop += 1 # After this we need to +1 tp the index, same as upper_loop
-    #print("lower",lower_loop, upper_loop,k)
+    #test=upper_loop - lower_loop
+    #print("lower",lower_loop, upper_loop,k,test)
     for j in range(lower_loop, upper_loop):
         GRADE[POSITION[j]] = 10 - k
 
 # Print out the results table
-print("Resi Ty cons   int    vdw    ele    pol    npl   sasa  gas_e  rank grade max min")
+print("Resi Ty cons   int    vdw    ele    pol    npl   sasa   gas_e  rank grade max min")
 for j in range(MIN_RESNUM, MAX_RESNUM+1):
     res_max = GRADE[j] + CONSURF[j]
     res_min = GRADE[j] - CONSURF[j]
@@ -151,6 +152,6 @@ for j in range(MIN_RESNUM, MAX_RESNUM+1):
           "  {:>1}".format(CONSURF[j]), "{:6.1f}".format(INT_STAB[j]), \
           "{:6.1f}".format(VMD_STAB[j]), "{:6.1f}".format(ELE_STAB[j]), \
           "{:6.1f}".format(POL_STAB[j]), "{:6.1f}".format(NPL_STAB[j]), \
-          "{:6.1f}".format(RELSASA[j]), "{:6.1f}".format(GAS_ENE[j]), \
+          "{:6.1f}".format(RELSASA[j]), "{:7.2f}".format(GAS_ENE[j]), \
           "  {:>2}".format(RANK[j]), "   {:>2}".format(GRADE[j]), \
           "{:>3}".format(res_max), "{:>3}".format(res_min))
