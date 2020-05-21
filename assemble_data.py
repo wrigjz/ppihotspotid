@@ -104,13 +104,12 @@ for j in range(MIN_RESNUM, MAX_RESNUM+1):
         if GAS_ENE[j] > (lower + (BIN_WIDTH * k)):
             RANK[j] = 10 - k
 
-# Here try to sort the residues based on GAS_ENErgies, posiiton should now run from
+# Here try to sort the residues based on GAS_ENErgies, position should now run from
 # lowest E to highest E
-#for j in range(0,i):
 UNSORTED = 1
 while UNSORTED == 1:
     UNSORTED = 0
-    for k in range(0, MAX_RESNUM):
+    for k in range(MIN_RESNUM, MAX_RESNUM): # Start at 1 so resnum 0 is not sorted into the middle
         if GAS_ENE[POSITION[k]] > GAS_ENE[POSITION[k+1]]:
             temp_pos = POSITION[k]
             POSITION[k] = POSITION[k+1]
@@ -119,16 +118,13 @@ while UNSORTED == 1:
     if UNSORTED == 0:
         break
 
-# Now we need to GRADE according to the energies, equal # of residues in each band
-BAND_WIDTH = ((MAX_RESNUM - MIN_RESNUM) + 1 ) / 10  # We are sorting into 10 groups
+# Now we need to GRADE according to the energies, equal nos of residues in each band
+BAND_WIDTH = ((MAX_RESNUM - MIN_RESNUM) + 1) / 10  # We are sorting into 10 groups
 #print(MAX_RESNUM,MIN_RESNUM,BAND_WIDTH)
 for k in range(0, 10):
-    lower_loop = int(BAND_WIDTH * k)
+    lower_loop = int(BAND_WIDTH * k) + 1 # Element 0 is not used, we start at 1
     upper_loop = int(BAND_WIDTH * (k+1)) + 1
-    if lower_loop != 0: # First time we need to allow for the 0th element
-        lower_loop += 1 # After this we need to +1 tp the index, same as upper_loop
-    #test=upper_loop - lower_loop
-    #print("lower",lower_loop, upper_loop,k,test)
+    #print("lower",lower_loop, "upper",upper_loop,"round",k)
     for j in range(lower_loop, upper_loop):
         GRADE[POSITION[j]] = 10 - k
 
