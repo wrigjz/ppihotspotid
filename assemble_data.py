@@ -102,14 +102,15 @@ for j in range(MIN_RESNUM, MAX_RESNUM+1):
         if GAS_ENE[j] > (lower + (BIN_WIDTH * k)):
             RANK[j] = 10 - k
 
-# Here we use a tuple to sort the gas phase energies and remove 0th element
+# Here we use a tuple to sort the gas phase energies, remove any non resname elements
 GAS_LIST = tuple(zip(RESNUMBER, GAS_ENE, RESNAME))
 GAS_LIST1 = list(filter(lambda a: a[2] != 0, GAS_LIST))
 # Sort that tuple by the gas energy value, and get number of elements
 SORTED_GAS = sorted(GAS_LIST1, key=lambda x: x[1])
 NUM_OF_ELEMENTS = len(SORTED_GAS)
 
-# Now we need to GRADE according to the energies, equal nos of residues in each band
+# Now we need to GRADE according to the energies, equal nos of residues in each
+# of the first 9 bands with all the rest of the residues put into the last
 BAND_WIDTH = int(NUM_OF_ELEMENTS  / 10)  # We are sorting into 10 groups
 #print(MAX_RESNUM,MIN_RESNUM,BAND_WIDTH)
 for k in range(0, 10):
@@ -119,7 +120,7 @@ for k in range(0, 10):
         upper_loop = NUM_OF_ELEMENTS
     #print("lower",lower_loop, "upper",upper_loop,"round",k)
     for j in range(lower_loop, upper_loop):
-        GRADE[SORTED_GAS[j][0]] = 10 - k
+        GRADE[SORTED_GAS[j][0]] = 10 - k # We want most stable to be 10, least to be 1
 
 # Print out the results table
 print("Resi Ty cons   int    vdw    ele    pol    npl   sasa   gas_e  rank grade max min")
