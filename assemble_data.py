@@ -123,7 +123,7 @@ for k in range(0, 10):
         GRADE[SORTED_GAS[j][0]] = 10 - k # We want most stable to be 10, least to be 1
 
 # Print out the results table
-print("Resi Ty cons   int    vdw    ele    pol    npl   sasa   gas_e  rank grade max min")
+print("Resi Ty cons   int    vdw    ele    pol    npl   sasa     gas_e  rank grade max min")
 for j in range(MIN_RESNUM, MAX_RESNUM+1):
     res_max = GRADE[j] + CONSURF[j]
     res_min = GRADE[j] - CONSURF[j]
@@ -136,6 +136,6 @@ for j in range(MIN_RESNUM, MAX_RESNUM+1):
           "  {:>1}".format(CONSURF[j]), "{:6.1f}".format(INT_STAB[j]), \
           "{:6.1f}".format(VMD_STAB[j]), "{:6.1f}".format(ELE_STAB[j]), \
           "{:6.1f}".format(POL_STAB[j]), "{:6.1f}".format(NPL_STAB[j]), \
-          "{:6.1f}".format(RELSASA[j]), "{:7.2f}".format(GAS_ENE[j]), \
+          "{:6.1f}".format(RELSASA[j]), "{:9.3f}".format(GAS_ENE[j]), \
           "  {:>2}".format(RANK[j]), "   {:>2}".format(GRADE[j]), \
           "{:>3}".format(res_max), "{:>3}".format(res_min))
