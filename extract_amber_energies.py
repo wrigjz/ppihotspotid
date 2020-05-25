@@ -228,7 +228,7 @@ for WTENERGY in WTTYPE:
 
 #print(eel_ttl, eel_100, COUNT)
 for i in range(0, COUNT):
-    OUTPUT.write(RES_TYPE[i] + " {:>4}".format(RES_NUMBER[i]) + " {:8.2f}".format(INT_STD[i]) + \
-        "{:8.2f}".format(VDW_STD[i]) + "{:8.2f}".format(ELEC_STD[i]) + \
-        "{:8.2f}".format(POL_STD[i]) + "{:8.2f}".format(NPOL_STD[i]) + \
-        "{:8.2f}".format(RES_ENERGY[i]) + "\n")
+    OUTPUT.write(RES_TYPE[i] + " {:>4}".format(RES_NUMBER[i]) + " {:9.3f}".format(INT_STD[i]) + \
+        "{:9.3f}".format(VDW_STD[i]) + "{:9.3f}".format(ELEC_STD[i]) + \
+        "{:9.3f}".format(POL_STD[i]) + "{:9.3f}".format(NPOL_STD[i]) + \
+        "{:9.3f}".format(RES_ENERGY[i]) + "\n")
