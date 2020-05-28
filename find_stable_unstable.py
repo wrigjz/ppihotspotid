@@ -162,13 +162,13 @@ INDEX_NET = -1
 for i in range(0, MATRIX_NUMBER+1):
     for j in range(0, INDEX_NB2+1):
         if SAVED_RESIDUE1[i] == RESIDUE1[j] or SAVED_RESIDUE2[i] == RESIDUE1[j]:
-            #print(RESIDUE2[j])
+            #print(RESIDUE2[j]) # Non-matching one
             INDEX_NET += 1
-            NETWORK[INDEX_NET] = int(RESIDUE2[j])
+            NETWORK[INDEX_NET] = int(RESIDUE2[j]) # Save the non-matching residue
         if SAVED_RESIDUE1[i] == RESIDUE2[j] or SAVED_RESIDUE2[i] == RESIDUE2[j]:
-            #print(RESIDUE1[j])
+            #print(RESIDUE1[j]) # Non-matching one
             INDEX_NET += 1
-            NETWORK[INDEX_NET] = int(RESIDUE1[j])
+            NETWORK[INDEX_NET] = int(RESIDUE1[j]) # Save the non-matching residue
 
 # Now try to remove network residues that are duplicates of the stable residues
 for i in range(0, INDEX_NET+1):
