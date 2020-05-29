@@ -26,7 +26,7 @@ $AMBERHOME/bin/pdb4amber --reduce --noter initial.pdb -o process.pdb >| process.
 python $scripts/find_gaps.py process.pdb process.txt process1.pdb
 
 $AMBERHOME/bin/tleap -f $scripts/leapin0
-python3 $scripts/find_terminal.py process2.pdb processed.pdb
+python3 $scripts/add_ace_nme.py process2.pdb processed.pdb
 
 # start the actual amber/fed process
 $AMBERHOME/bin/tleap -f $scripts/leapin1

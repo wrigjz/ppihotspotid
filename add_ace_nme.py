@@ -7,9 +7,11 @@
 ###################################################################################################
 import sys
 
-# This file will read the process.txt file from pdb4amber and
-# look for the gaps, it will then add the TER line after each gap
-#
+# This script takes a PDB file as it's input, it removes H1, H3 atoms
+# found on N-termainals and replaces the H2 with a ACE C atom
+# It replaces the OXT atom on the C-terminal with a NME N atom instead
+# The input PDB file must contain TER records for this to work
+# to run: python3 add_ace_nme.py input.pdb output.pdb
 
 if len(sys.argv) < 3:
     print("Please give input and output files")
