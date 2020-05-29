@@ -7,11 +7,12 @@
 ###################################################################################################
 #
 # This program reads a freesasa output file and then gives a percentage instead
-# The standard values were taken from freesasa
+# The "standard" values were taken using freesasa on Amber minimized Me-X-Me tripeptides
+# to be consistent with the unfilding energies used elsewhere
 
 import sys
 
-SASATAB = { # This is the total SASA in the G-X-G tripeptide, we calc'd this ourselves
+SASATAB = {
     'ASP' : float(160.46),
     'GLY' : float(86.07),
     'PRO' : float(142.79),
@@ -42,20 +43,20 @@ SASATAB = { # This is the total SASA in the G-X-G tripeptide, we calc'd this our
 
 # Get the input name from the command line
 if len(sys.argv) == 1:
-    print("Needs a argument with a output file\n")
+    print("Needs a argument giving a freesasa output file\n")
     sys.exit(0)
 
 # Open the sasa file,
 SASAFILE = open(sys.argv[1], "r")
-i = int(0)
+#i = int(0)
 
 for SASALINE in SASAFILE:
     if SASALINE[0:3] != "SEQ":
         continue
-    SASALINE = SASALINE.rstrip()     # Perl Chomp
+    SASALINE = SASALINE.rstrip()     # Remove spaces at end of line, newline etc
     SASASPLIT = SASALINE.split(":")   # separate at the :
     residue = SASALINE[12:15]
-    temp = SASASPLIT[1].replace(" ", "")
-    sasadom = (SASATAB.get(residue))
-    relsasa = (float(temp) / sasadom)*100       # calculate the relative sasa
+    calcsasa = SASASPLIT[1].replace(" ", "") # Remove any spaces
+    tripsasa = (SASATAB.get(residue))
+    relsasa = (float(calcsasa) / tripsasa)*100       # calculate the relative sasa
     print(SASALINE[0:10], SASALINE[11:24], " : {:7.2f}".format(relsasa))
