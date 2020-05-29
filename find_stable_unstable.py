@@ -18,6 +18,11 @@
 
 #Resi Ty bind cons   int    vdw    ele    pol    npl   sasa  gas_e rank  rern max min cle
 #  1 ACE    0   0   32.0   -0.6  -13.8   -0.3   -0.3   71.3   17.6    3     1   1   1   0
+#
+# usage: python3 find_stable_unstable.py >| results_ambnum.txt
+# files needed:
+#    assemble.txt - comes from using the assemble_data.py script
+#    vdw ontact file - usually a nb2 file from hbplus
 
 INDEX = 0
 # Open the assemble file and create the needed arrays

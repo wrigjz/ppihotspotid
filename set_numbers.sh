@@ -7,6 +7,8 @@
 ###################################################################################################
 # This script sets up a HASH mapping the original pdb numbers to the amber numbers
 # It is run after Amber has capped the gaps etc
+# Input are files called pre_mini_renum.txt and renumber.txt
+# Output is a python hash called NUMBERS in a file called numbers.py
 
 echo "NUMBERS = {" >| numbers.py
 grep -v ACE pre_mini_renum.txt |grep -v NME|paste - renumber.txt| \

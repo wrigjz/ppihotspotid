@@ -8,6 +8,7 @@
 import sys
 
 # Simple script to add the chain id X to a PDB file
+# python3 add_chain.py input.pdb output.pdb
 
 INFILE = open(sys.argv[1], "r")
 OUTFILE = open(sys.argv[2], "w")

@@ -7,6 +7,11 @@
 ###################################################################################################
 
 # This script take the stable/unstable results and then maps them back to the original PDB numbers
+# Usage: PYTHONPATH=. python3 print_results.py
+# files needed -
+#      original_chain.txt - so we can map the original chain id
+#      results_ambnum.txt - the actual results, these are in amber numbering
+#      number.py          - the file containing the hash mapping pdb numbers to amber numbers
 
 # Get the local dircetory and add it to the module search path
 from numbers import NUMBERS

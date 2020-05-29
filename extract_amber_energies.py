@@ -9,10 +9,11 @@
 # This file will read the AMBER MM_PBSA DECOMP files, it then calculates
 # the difference from a standard value for each of the required energies for each residue
 #
-# to use try something like python3 find_stable_energy.py
+# Usage: python3 find_stable_energy.py
+# Output goes to a file called stability.txt
 #
-# File will be: FINAL_DECOMP_MMPBSA_wt.dat
-#
+# Files needed:  
+#       FINAL_DECOMP_MMPBSA_wt.dat
 
 # Get a line count for the arrays we need
 NUM_LINES = 0

@@ -6,7 +6,7 @@
 ## back to the original authors
 ###################################################################################################
 # Simple script to try to assemble data for the critires project
-# In this method we take gas nergy values (calc's as the energy in the chain - the standard energy
+# In this method we take gas nergy values, calc's as the energy in the chain - the standard energy
 # of the residue as a Me-X-Me triad
 # Firstly we take the energy for each residue and sort them from lowest to highest
 #
@@ -24,6 +24,11 @@
 # their consurf values to 0 to make sure these are not selected later on
 #
 # At the moment Max and Min are calculated using grade not rank
+# usage: python3 assemble_data.py >| assemble.txt
+# files needed: 
+#    relative sasa file
+#    consurf grades files
+#    stability file (comes from amber decomp after processing with extract_amber_energies.py)
 
 # Get a line count for the arrays we need
 NUM_LINES = 1
