@@ -10,7 +10,7 @@
 # from column 14 and 15, we discard any that have a sasa < a cutoff
 #
 # We then look for any Stable residues vdw bonded to any Unstable residues (Matrix pair)
-# Then look for any other residues (SASA > cutoff) that are vdw bonded to
+# Then look for any other residues (SASA > cutoff & Kc == 9) that are vdw bonded to
 # either of the Stab/UnStab matrix pairs - we call these Bridge residues
 #
 # Stable are the low numbers e.g. energy rank - high consurf = v negative (min)
