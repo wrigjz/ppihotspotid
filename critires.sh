@@ -13,7 +13,12 @@ export scripts=../critires_scripts
 export consurf_scripts=../consurf_scripts
 source /home/programs/anaconda/linux-5.3.6/init.sh
 
-# Start off by running preparing the PDB files and running AMBER
+# Start off by running checking for missing backbone atoms in the PDB file and running AMBER
+python3 $scripts/check_bb.py input.pdb missing.txt
+if [ -s missing.txt ] ; then
+        echo "Input file has missing backbone atoms, please fix this"
+        exit
+fi
 grep '^ATOM  ' input.pdb | head -1 | cut -c22-22 >| original_chain.txt
 $scripts/run_amber.sh
 
