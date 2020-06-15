@@ -21,6 +21,7 @@ LISTFILE = open(sys.argv[1], "r")
 
 # Process the pdb id chain id list file
 for LIST in LISTFILE:
+    found_chain = 0
     PDB, CHAIN, *junk = [x.strip() for x in LIST.split()]
     pdblc = PDB.lower()
     chainlc = CHAIN.lower()
