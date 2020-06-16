@@ -28,26 +28,37 @@ OATOM = []
 CAATOM = []
 RESNUM = []
 
-previous = "PREV"
-index = -1
+PREVIOUS = "PREV"
+INDEX = -1
+PREV_CHAIN = "#"
 # Read in the pdb file and process it
 for TMLINE in INPDB:
     if TMLINE[0:4] == "ATOM":
+        chain = TMLINE[21:22]
+        if PREV_CHAIN == "#":
+            chain_count = 1
+            PREV_CHAIN = chain
+        elif PREV_CHAIN != chain:
+            chain_count += 1
         resid_long = TMLINE[22:27] # Need to include A/B/C residues
         resid = resid_long.replace(" ", "") # Remove whitespace from resid
-        if resid != previous: # New residue append to the arrays
-            index += 1         # Increment the index
+        if resid != PREVIOUS: # New residue append to the arrays
+            INDEX += 1         # Increment the index
             NATOM.append("0")
             CATOM.append("0")
             OATOM.append("0")
             CAATOM.append("0")
             RESNUM.append(resid)
-            previous = resid
+            PREVIOUS = resid
         in1, in2, in3, *junk = [x.strip() for x in TMLINE.split()] # Fine the atom type
-        if in3 == "N": NATOM[index] = "1" # IF we find the 'right' one set to '1'
-        if in3 == "C": CATOM[index] = "1"
-        if in3 == "O": OATOM[index] = "1"
-        if in3 == "CA": CAATOM[index] = "1"
+        if in3 == "N":
+            NATOM[INDEX] = "1" # IF we find the 'right' one set to '1'
+        if in3 == "C":
+            CATOM[INDEX] = "1"
+        if in3 == "O":
+            OATOM[INDEX] = "1"
+        if in3 == "CA":
+            CAATOM[INDEX] = "1"
 
 # Now make a tuple from the atoms and the residue numbers
 NMERGED = tuple(zip(NATOM, RESNUM))
@@ -71,21 +82,25 @@ CALEN = len(CAMERGED_LIST)
 # And then print them out
 if CLEN != 0 or NLEN != 0 or OLEN != 0 or CALEN != 0:
     OUTTXT.write("Missing backbone atoms:\n")
-    for i in range(0,NLEN):
+    for i in range(0, NLEN):
         OUTTXT.write("Missing N atom on residue: ")
         OUTTXT.write(NMERGED_LIST[i][1])
         OUTTXT.write("\n")
-    for i in range(0,CLEN):
+    for i in range(0, CLEN):
         OUTTXT.write("Missing C atom on residue: ")
         OUTTXT.write(CMERGED_LIST[i][1])
         OUTTXT.write("\n")
-    for i in range(0,OLEN):
+    for i in range(0, OLEN):
         OUTTXT.write("Missing O atom on residue: ")
         OUTTXT.write(OMERGED_LIST[i][1])
         OUTTXT.write("\n")
-    for i in range(0,CALEN):
+    for i in range(0, CALEN):
         OUTTXT.write("Missing CA atom on residue: ")
         OUTTXT.write(CAMERGED_LIST[i][1])
         OUTTXT.write("\n")
 INPDB.close()
+if chain_count > 1:
+    OUTTXT.write("Too many chains ")
+    OUTTXT.write(str(chain_count))
+    OUTTXT.write("\n")
 OUTTXT.close()
