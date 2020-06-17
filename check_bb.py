@@ -100,7 +100,7 @@ if CLEN != 0 or NLEN != 0 or OLEN != 0 or CALEN != 0:
         OUTTXT.write("\n")
 INPDB.close()
 if chain_count > 1:
-    OUTTXT.write("Too many chains ")
+    OUTTXT.write("Too many chains: ")
     OUTTXT.write(str(chain_count))
     OUTTXT.write("\n")
 OUTTXT.close()
