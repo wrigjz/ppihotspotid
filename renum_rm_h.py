@@ -11,8 +11,8 @@ import sys
 # at the same time while writing out the renumerbing scheme
 # if you do not want to renumber then the 3rd argument must be No
 #
-# usage python3 remove_h.py input.pdb initial.pdb renumber.txt
-#       python3 remove_h.py input.pdb initial.pdb No
+# usage python3 renum_rm_h.py input.pdb initial.pdb renumber.txt
+#       python3 renum_rm_h.py input.pdb initial.pdb No
 
 INFILE = open(sys.argv[1], "r")
 OUTFILE = open(sys.argv[2], "w")
