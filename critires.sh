@@ -60,8 +60,6 @@ $scripts/set_numbers.sh
 PYTHONPATH=. python3 $scripts/assemble_data.py >| assemble.txt
 
 # Get the stable/unstabla and results in the PDB numbering scheme
-/bin/rm -rf results_ambnum.txt results.txt
-python3 $scripts/find_stable_unstable.py >| results_ambnum.txt
-PYTHONPATH=. python3 $scripts/print_results.py | grep Stable   | sort -g -k 2 >| results.txt
-PYTHONPATH=. python3 $scripts/print_results.py | grep Unstable | sort -g -k 2 >> results.txt
-PYTHONPATH=. python3 $scripts/print_results.py | grep Bridge   | sort -g -k 2 >> results.txt
+python3 $scripts/find_stable_unstable.py | grep Stable   | sort -g -k 2 >| results.txt
+python3 $scripts/find_stable_unstable.py | grep Unstable | sort -g -k 2 >> results.txt
+python3 $scripts/find_stable_unstable.py | grep Bridge   | sort -g -k 2 >> results.txt
