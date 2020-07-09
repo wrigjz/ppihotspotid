@@ -56,7 +56,7 @@ $hbplus post_mini_noh.pdb -h 2.9 -d 4 -N -c
 #touch wild_bind.txt # needed for checking on binding sites
 
 # Pull all the data togeather
-python3 $scripts/assemble_data.py >| assemble.txt
+PYTHONPATH=. python3 $scripts/assemble_data.py >| assemble.txt
 
 # Get the stable/unstabla and results in the PDB numbering scheme
 /bin/rm -rf results_ambnum.txt results.txt
