@@ -30,6 +30,9 @@
 #    consurf grades files
 #    stability file (comes from amber decomp after processing with extract_amber_energies.py)
 
+# Get the local dircetory and add it to the module search path
+from numbers import NUMBERS
+
 # Get a line count for the arrays we need
 NUM_LINES = 1
 NUM_LINES += sum(1 for lines in open("post_mini.relsasa", "r"))
@@ -128,7 +131,7 @@ for k in range(0, 10):
         GRADE[SORTED_GAS[j][0]] = 10 - k # We want most stable to be 10, least to be 1
 
 # Print out the results table
-print("Resi Ty cons   int    vdw    ele    pol    npl   sasa     gas_e  rank grade max min")
+print("Resi Ty cons   int    vdw    ele    pol    npl   sasa     gas_e  rank grade max min  PDB")
 for j in range(MIN_RESNUM, MAX_RESNUM+1):
     res_max = GRADE[j] + CONSURF[j]
     res_min = GRADE[j] - CONSURF[j]
@@ -137,10 +140,14 @@ for j in range(MIN_RESNUM, MAX_RESNUM+1):
         res_max = 5
         res_min = 5
         CONSURF[j] = 0
+    RESNUMBER_STR = str(RESNUMBER[j])
+    ORIGINAL = (NUMBERS.get(RESNUMBER_STR))
+    if ORIGINAL is None:
+        ORIGINAL = "NaN"
     print("{:>4}".format(RESNUMBER[j]), "{:>3}".format(RESNAME[j]), \
           "  {:>1}".format(CONSURF[j]), "{:6.1f}".format(INT_STAB[j]), \
           "{:6.1f}".format(VMD_STAB[j]), "{:6.1f}".format(ELE_STAB[j]), \
           "{:6.1f}".format(POL_STAB[j]), "{:6.1f}".format(NPL_STAB[j]), \
           "{:6.1f}".format(RELSASA[j]), "{:9.3f}".format(GAS_ENE[j]), \
           "  {:>2}".format(RANK[j]), "   {:>2}".format(GRADE[j]), \
-          "{:>3}".format(res_max), "{:>3}".format(res_min))
+          "{:>3}".format(res_max), "{:>3}".format(res_min), " {:>4}".format(ORIGINAL))

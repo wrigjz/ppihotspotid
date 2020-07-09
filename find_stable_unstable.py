@@ -59,7 +59,7 @@ for LINE in INFILE:
         INDEX += 1
         RESNUMBER[INDEX], RESNAME[INDEX], in3, INT_STAB[INDEX], VDW_STAB[INDEX], \
             ELE_STAB[INDEX], POL_STAB[INDEX], NPL_STAB[INDEX], in0, GAS_ENR[INDEX], RANK[INDEX], \
-            GRADE[INDEX], in1, in2 = [x.strip() for x in LINE.split()]
+            GRADE[INDEX], in1, in2, PDB = [x.strip() for x in LINE.split()]
         CONSURF[INDEX] = int(in3)
         RELSASA[INDEX] = float(in0)
         MAX_VALUE[INDEX] = int(in1)
