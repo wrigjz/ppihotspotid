@@ -25,7 +25,7 @@
 #
 # At the moment Max and Min are calculated using grade not rank
 # usage: python3 assemble_data.py >| assemble.txt
-# files needed: 
+# files needed:
 #    relative sasa file
 #    consurf grades files
 #    stability file (comes from amber decomp after processing with extract_amber_energies.py)

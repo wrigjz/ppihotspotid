@@ -15,6 +15,9 @@
 #
 # Stable are the low numbers e.g. energy rank - high consurf = v negative (min)
 # Unstable are the high numbers e.g. energy rank + high consurf = v positive (max)
+# 
+# Even though we read in the PDB numbers we have to use the internal scheme in order
+# to remain consistent with hbplus 
 
 #Resi Ty bind cons   int    vdw    ele    pol    npl   sasa  gas_e rank  rern max min cle
 #  1 ACE    0   0   32.0   -0.6  -13.8   -0.3   -0.3   71.3   17.6    3     1   1   1   0
@@ -69,7 +72,7 @@ INFILE.close()
 
 # Here we merge the resnumber, resname, max, min and relsasa into a tuple
 # and then remove where sasa <= cutoff
-MERGED_LIST_SASA = tuple(zip(PDB, RESNAME, MAX_VALUE, MIN_VALUE, RELSASA))
+MERGED_LIST_SASA = tuple(zip(RESNUMBER, RESNAME, MAX_VALUE, MIN_VALUE, RELSASA))
 MERGED_LIST = list(filter(lambda a: a[4] > SASA_CUTOFF, MERGED_LIST_SASA))
                    # Remove 0 values from network list
 MERGED_LIST_LEN = len(MERGED_LIST)
@@ -97,7 +100,7 @@ for i in range(0, MERGED_LIST_LEN):
         INDEX_ST += 1
         NAME = MAX_ARRAY[i][1]
         NUMBER = MAX_ARRAY[i][0]
-        print("{:>3}".format(NAME), "{:>4}".format(NUMBER), "Stable")
+        print("{:>3},".format(NAME), "{:>4},".format(NUMBER), "Stable")
         STABLE_NAME[INDEX_ST] = NAME
         STABLE_NUMBER[INDEX_ST] = int(NUMBER)
 
@@ -107,7 +110,7 @@ for i in range(0, MERGED_LIST_LEN):
         INDEX_UN += 1
         NAME = MIN_ARRAY[i][1]
         NUMBER = MIN_ARRAY[i][0]
-        print("{:>3}".format(NAME), "{:>4}".format(NUMBER), "Unstable")
+        print("{:>3},".format(NAME), "{:>4},".format(NUMBER), "Unstable")
         UNSTABLE_NAME[INDEX_UN] = NAME
         UNSTABLE_NUMBER[INDEX_UN] = int(NUMBER)
 
@@ -202,4 +205,4 @@ for line in NETWORK1:
     # Need to use -1 below because python arrays start at 0
     if RELSASA[line-1] > SASA_CUTOFF and CONSURF[line-1] == 9: # only print if relasas > cutoff,
                                                                 # and consurf = 9
-        print("{:>3}".format(RESNAME[line-1]), "{:>4}".format(PDB[line-1]), "Bridge")
+        print("{:>3},".format(RESNAME[line-1]), "{:>4},".format(RESNUMBER[line-1]), "Bridge")
