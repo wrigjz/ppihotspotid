@@ -204,5 +204,5 @@ NETWORK1.sort()  # sort network list
 for line in NETWORK1:
     # Need to use -1 below because python arrays start at 0
     # only print if  relasas > cutoff +0.5 amd consurf = 9,
-    if RELSASA[line-1] > (SASA_CUTOFF + 0.5) and CONSURF[line-1] == 9:
+    if RELSASA[line-1] > SASA_CUTOFF and CONSURF[line-1] == 9:
         print("{:>3},".format(RESNAME[line-1]), "{:>4},".format(RESNUMBER[line-1]), "Bridge")
