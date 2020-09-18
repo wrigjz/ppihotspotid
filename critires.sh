@@ -19,7 +19,7 @@ if [ -s missing.txt ] ; then
         echo "Input file has missing backbone atoms, please fix this"
         exit
 fi
-grep '^ATOM  ' input.pdb | head -1 | cut -c22-22 >| original_chain.txt
+grep '^ATOM  ' input.pdb | tail -1 | cut -c22-22 >| original_chain.txt
 $scripts/run_amber.sh
 
 python3 $scripts/extract_amber_energies.py
