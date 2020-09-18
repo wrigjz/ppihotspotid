@@ -29,8 +29,8 @@ SEQNUM = 0
 for TMLINE in INFILE:
     if TMLINE[18:19] == ":":
         SEQNUM += 1  # increment the consurf sequence number
-        seqnum_str = str(SEQNUM) # Done this way to be compatitble with Jon's own CS server
-        original = (R4S_2_PDB.get(seqnum_str)) # get the 'original' resnumber from
+        SEQNUM_STR = str(SEQNUM) # Done this way to be compatitble with Jon's own CS server
+        original = (R4S_2_PDB.get(SEQNUM_STR)) # get the 'original' resnumber from
                                                # the post_mini.pdb file for CS
         score = TMLINE[31:32]
         OUTFILE.write(" {:>4}".format(original) + " {:>3}".format(score) + "\n")

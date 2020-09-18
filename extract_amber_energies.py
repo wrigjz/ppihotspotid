@@ -12,7 +12,7 @@
 # Usage: python3 find_stable_energy.py
 # Output goes to a file called stability.txt
 #
-# Files needed:  
+# Files needed:
 #       FINAL_DECOMP_MMPBSA_wt.dat
 
 # Get a line count for the arrays we need
@@ -194,7 +194,7 @@ for WTENERGY in WTTYPE:
 # We can not use split here because the number of residues can be > 10000
         temp1 = WTENERGY[0:3]
         temp2 = temp1.strip()
-        resname = str(temp2)
+        RESNAME = str(temp2)
         temp1 = WTENERGY[3:8]
         temp2 = temp1.strip()
         resid = int(temp2)
@@ -213,14 +213,14 @@ for WTENERGY in WTTYPE:
         temp1 = WTENERGY[97:107]
         temp2 = temp1.strip()
         npol = float(temp2)
-        #print(resname,resid,internal,vdw,elec,pol,npol)
-        RES_TYPE[COUNT] = resname
+        #print(RESNAME,resid,internal,vdw,elec,pol,npol)
+        RES_TYPE[COUNT] = RESNAME
         RES_NUMBER[COUNT] = resid
-        VDW_STD[COUNT] = float(vdw) - float(VDWTAB[resname])
-        ELEC_STD[COUNT] = float(elec) - float(EELTAB[resname])
-        INT_STD[COUNT] = float(internal) - float(INTTAB[resname])
-        POL_STD[COUNT] = float(pol) - float(EPOLTAB[resname])
-        NPOL_STD[COUNT] = float(npol) - float(NPOLTAB[resname])
+        VDW_STD[COUNT] = float(vdw) - float(VDWTAB[RESNAME])
+        ELEC_STD[COUNT] = float(elec) - float(EELTAB[RESNAME])
+        INT_STD[COUNT] = float(internal) - float(INTTAB[RESNAME])
+        POL_STD[COUNT] = float(pol) - float(EPOLTAB[RESNAME])
+        NPOL_STD[COUNT] = float(npol) - float(NPOLTAB[RESNAME])
         RES_ENERGY[COUNT] = VDW_STD[COUNT] + ELEC_STD[COUNT] + INT_STD[COUNT]
         RES_SOLV[COUNT] = POL_STD[COUNT] + NPOL_STD[COUNT]
         COUNT += 1

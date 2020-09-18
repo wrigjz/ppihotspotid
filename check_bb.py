@@ -15,7 +15,7 @@ import sys
 
 if len(sys.argv) < 3:
     print("Please give input pdb file and output txt file")
-    exit()
+    sys.exit()
 
 # Open the in and out files
 INPDB = open(sys.argv[1], "r")
@@ -36,10 +36,10 @@ for TMLINE in INPDB:
     if TMLINE[0:4] == "ATOM":
         chain = TMLINE[21:22]
         if PREV_CHAIN == "#":
-            chain_count = 1
+            CHAIN_COUNT = 1
             PREV_CHAIN = chain
         elif PREV_CHAIN != chain:
-            chain_count += 1
+            CHAIN_COUNT += 1
         resid_long = TMLINE[22:27] # Need to include A/B/C residues
         resid = resid_long.replace(" ", "") # Remove whitespace from resid
         if resid != PREVIOUS: # New residue append to the arrays
@@ -99,8 +99,8 @@ if CLEN != 0 or NLEN != 0 or OLEN != 0 or CALEN != 0:
         OUTTXT.write(CAMERGED_LIST[i][1])
         OUTTXT.write("\n")
 INPDB.close()
-if chain_count > 1:
+if CHAIN_COUNT > 1:
     OUTTXT.write("Too many chains: ")
-    OUTTXT.write(str(chain_count))
+    OUTTXT.write(str(CHAIN_COUNT))
     OUTTXT.write("\n")
 OUTTXT.close()

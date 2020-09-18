@@ -25,7 +25,7 @@ from r4s_pdb import R4S_2_PDB
 
 if len(sys.argv) != 5:
     print("Please give seqres fasta file, the atoms fasta file, the grades files and output file.")
-    exit()
+    sys.exit()
 
 TARGETFILE = open(sys.argv[1], "r")
 INFILE = open(sys.argv[2], "r")
@@ -65,13 +65,13 @@ SEQRES_INDEX = -1
 ATOM_COUNT = 0
 for i in TEMP[0][1]:
     SEQRES_INDEX += 1 # Increment the SEQRES_INDEX, we can not use i because it is a letter
-    counter = SEQRES_INDEX + 1 # needed becasue python starts are zero
+    COUNTER = SEQRES_INDEX + 1 # needed becasue python starts are zero
     if TEMP[0][1][SEQRES_INDEX] != "-": # Only consider ones that are aligned with the ATOMS
         GRADESFILE.seek(0) # Rewind the grades file
         for LINE in GRADESFILE: # Find the 'right' residue in the seqres.grades file
             number, single, triple, number1, grade, value = [x.strip() for x in LINE.split()]
             if number != "#": # Ignore the frist line of the grades file
-                if int(number) == counter:
+                if int(number) == COUNTER:
                     ATOM_COUNT += 1 # This is incremented when we have a match
                     TEMP1 = str(ATOM_COUNT)
                     # get the 'original' resnumber from the initial pdb file

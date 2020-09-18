@@ -15,9 +15,9 @@
 #
 # Stable are the low numbers e.g. energy rank - high consurf = v negative (min)
 # Unstable are the high numbers e.g. energy rank + high consurf = v positive (max)
-# 
+#
 # Even though we read in the PDB numbers we have to use the internal scheme in order
-# to remain consistent with hbplus 
+# to remain consistent with hbplus
 
 #Resi Ty bind cons   int    vdw    ele    pol    npl   sasa  gas_e rank  rern max min cle
 #  1 ACE    0   0   32.0   -0.6  -13.8   -0.3   -0.3   71.3   17.6    3     1   1   1   0
@@ -131,12 +131,12 @@ for LINE in NB2FILE:
         temp1 = int(LINE[1:5])
         temp2 = int(LINE[15:19])
         # Check if this pairing has been seen before
-        marker = 0
+        MARKER = 0
         for i in range(0, INDEX_NB2+1):
             if temp1 == RESIDUE1[i] and temp2 == RESIDUE2[i]:
-                marker = 1
+                MARKER = 1
         # This is a new pair so we will save it
-        if marker == 0:
+        if MARKER == 0:
             INDEX_NB2 += 1
             RESIDUE1.append(temp1)
             RESIDUE2.append(temp2)

@@ -25,9 +25,9 @@ CHAINFILE.close()
 INFILE = open("results_ambnum.txt")
 for LINE in INFILE:
     resname, resnumber, crititype = [x.strip() for x in LINE.split(",")]
-    original = (NUMBERS.get(resnumber))
-    if original is None:
-        original = "NaN"
-    print("{:3s}".format(resname), "{:>4}".format(original), "{:1s}".format(chain), \
+    ORIGINAL = (NUMBERS.get(resnumber))
+    if ORIGINAL is None:
+        ORIGINAL = "NaN"
+    print("{:3s}".format(resname), "{:>4}".format(ORIGINAL), "{:1s}".format(chain), \
           "{:8s}".format(crititype))
 INFILE.close()

@@ -13,7 +13,7 @@ import sys
 
 if len(sys.argv) < 4:
     print("Please give input pdb file, pdb4amber output and output file")
-    exit()
+    sys.exit()
 
 INPDB = open(sys.argv[1], "r")
 PROCESS = open(sys.argv[2], "r")
