@@ -25,7 +25,7 @@
 # usage: python3 find_stable_unstable.py >| results_ambnum.txt
 # files needed:
 #    assemble.txt - comes from using the assemble_data.py script
-#    vdw ontact file - usually a nb2 file from hbplus
+#    vdw contact file - usually a nb2 file from hbplus
 
 INDEX = 0
 # Open the assemble file and create the needed arrays
@@ -54,8 +54,14 @@ STABLE_NAME = [0 for i in range(0, INDEX)]
 STABLE_NUMBER = [0 for i in range(0, INDEX)]
 UNSTABLE_NAME = [0 for i in range(0, INDEX)]
 UNSTABLE_NUMBER = [0 for i in range(0, INDEX)]
+RESIDUE_ST = [0 for i in range(0, INDEX)]
+RESIDUE_UN = [0 for i in range(0, INDEX)]
+BRIDGE = [0 for i in range(0, INDEX)]
 PDB = [0 for i in range(0, INDEX)]
+MATRIXNB2 = [[0 for i in range(0, INDEX)] for j in range(0, INDEX)] # For HB2 results
 SASA_CUTOFF = float(0.0)
+RESIDUE1 = []
+RESIDUE2 = []
 
 INDEX = -1
 for LINE in INFILE:
@@ -103,6 +109,9 @@ for i in range(0, MERGED_LIST_LEN):
         print("{:>3},".format(NAME), "{:>4},".format(NUMBER), "Stable")
         STABLE_NAME[INDEX_ST] = NAME
         STABLE_NUMBER[INDEX_ST] = int(NUMBER)
+        TEMP1 = int(NUMBER) -1
+        RESIDUE_ST[TEMP1] = 1
+        #print(RESIDUE_ST[TEMP1], NUMBER, TEMP1)
 
 #print("Unstable conserved")
 for i in range(0, MERGED_LIST_LEN):
@@ -113,96 +122,48 @@ for i in range(0, MERGED_LIST_LEN):
         print("{:>3},".format(NAME), "{:>4},".format(NUMBER), "Unstable")
         UNSTABLE_NAME[INDEX_UN] = NAME
         UNSTABLE_NUMBER[INDEX_UN] = int(NUMBER)
+        TEMP1 = int(NUMBER) -1
+        RESIDUE_UN[TEMP1] = 1
+        #print(RESIDUE_UN[TEMP1], NUMBER, TEMP1)
 
 # Okay now we look for stable ----vdw --- unstable pairs
 # Start by reading in the NB2 file
 #X0002-PRO N   X0001-ACE CH3 2.46 MH  -2 -1.00  -1.0 -1.00  -1.0  27.8     1
 
-# Initial array setup
-RESIDUE1 = []
-RESIDUE2 = []
-NETWORK = []
-
-# Now read in the vdw pairs from the nb2 file and discard duplicates
+# Now read in the vdw pairs from the nb2 file and form a matrix of contacts
 NB2FILE = open("post_mini_noh.nb2", "r")
 INDEX_NB2 = -1
 for LINE in NB2FILE:
     if LINE[0:1] == "X":
-        temp1 = int(LINE[1:5])
-        temp2 = int(LINE[15:19])
-        # Check if this pairing has been seen before
-        MARKER = 0
-        for i in range(0, INDEX_NB2+1):
-            if temp1 == RESIDUE1[i] and temp2 == RESIDUE2[i]:
-                MARKER = 1
-        # This is a new pair so we will save it
-        if MARKER == 0:
-            INDEX_NB2 += 1
-            RESIDUE1.append(temp1)
-            RESIDUE2.append(temp2)
+        temp1 = int(LINE[1:5])   # get the mini_mini resid and convert to internal
+        temp2 = int(LINE[15:19]) # get the mini_mini resid and convert to internal
+        temp1 = temp1 -1
+        temp2 = temp2 -1
+        if temp1 != temp2:
+            MATRIXNB2[temp1][temp2] = 1 # Set the matrix for this residue pair to 1
+            MATRIXNB2[temp2][temp1] = 1 # Set the matrix for this residue pair to 1
 
-#print(RESIDUE1)
-# Set up an array to save the pairs for the network residues
-SAVED_RESIDUE1 = []
-SAVED_RESIDUE2 = []
-#print(INDEX_ST, INDEX_UN, INDEX_NB2)
+# Here we try to find residues that form stable/unstable pairs
+for i in range(0, INDEX +1): # for each of the residues
+    for j in range(0, INDEX +1):
+        if (RESIDUE_ST[i] == 1 and RESIDUE_UN[j] == 1) or \
+           (RESIDUE_ST[j] == 1 and RESIDUE_UN[i] == 1): # check if residue make a pairing
+            if MATRIXNB2[i][j]:
+                RESIDUE1.append(i)
+                RESIDUE1.append(j)
+                #print("Paired:",i,j)
 
-# Now we do the actual search for the Stable/Unstable vdw bonded pairs (Matrix residues)
-MATRIX_NUMBER = -1
-for k in range(0, INDEX_NB2+1):
-    for i in range(0, INDEX_ST+1):
-        for j in range(0, INDEX_UN+1):
-            if (STABLE_NUMBER[i] == RESIDUE1[k] and UNSTABLE_NUMBER[j] == RESIDUE2[k]) or \
-                (STABLE_NUMBER[i] == RESIDUE2[k] and UNSTABLE_NUMBER[j] == RESIDUE1[k]):
-                #print("Matrix Pair", STABLE_NAME[i], STABLE_NUMBER[i], UNSTABLE_NAME[j], \
-                #    UNSTABLE_NUMBER[j])
-                MATRIX_NUMBER += 1
-                SAVED_RESIDUE1.append(STABLE_NUMBER[i])
-                SAVED_RESIDUE2.append(UNSTABLE_NUMBER[j])
+# Here we try to find residues that are attached to one of a parted couple
+i = -1
+for each in RESIDUE1:
+    i += 1
+    for j in range(0, INDEX +1):
+        if MATRIXNB2[RESIDUE1[i]][j] == 1:
+            #print("{:>3},".format(RESNAME[j]), "{:>4},".format(RESNUMBER[j]), "Bridge")
+            BRIDGE[j] = 1
 
-# New we need to look for the network residues which are connected to either one of the
-# Stable / Unstable Matrix pairs
-#print("Network residues")
-#print(SAVED_RESIDUE1)
-#print(SAVED_RESIDUE2)
-INDEX_NET = -1
-for i in range(0, MATRIX_NUMBER+1):
-    for j in range(0, INDEX_NB2+1):
-        if SAVED_RESIDUE1[i] == RESIDUE1[j] or SAVED_RESIDUE2[i] == RESIDUE1[j]:
-            #print(RESIDUE2[j])
-            INDEX_NET += 1
-            NETWORK.append(int(RESIDUE2[j])) # Save the non-matching residue
-        if SAVED_RESIDUE1[i] == RESIDUE2[j] or SAVED_RESIDUE2[i] == RESIDUE2[j]:
-            #print(RESIDUE1[j])
-            INDEX_NET += 1
-            NETWORK.append(int(RESIDUE1[j])) # Save the non-matching residue
-
-# Now try to remove network residues that are duplicates of the stable residues
-for i in range(0, INDEX_NET+1):
-    for j in range(0, INDEX_ST+1):
-        if NETWORK[i] == STABLE_NUMBER[j]:
-            #print("Forgotten Stable",NETWORK[i])
-            NETWORK[i] = 0
-
-# Now try to remove network residues that are duplicates of the unstable residues
-for i in range(0, INDEX_NET+1):
-    for j in range(0, INDEX_UN+1):
-        if NETWORK[i] == UNSTABLE_NUMBER[j]:
-            #print("Forgotten Unstable",NETWORK[i])
-            NETWORK[i] = 0
-
-# Now try to remove any duplicate network residues
-for i in range(0, INDEX_NET+1):
-    for j in range(i+1, INDEX_NET+1):
-        if NETWORK[i] == NETWORK[j]:
-            #print("Forgotten Network",NETWORK[i])
-            NETWORK[i] = 0
-
-# Now we order the Network residues, disgard any that are not 0, print what is left
-NETWORK1 = list(filter(lambda a: a != 0, NETWORK)) # Remove 0 values from network list
-NETWORK1.sort()  # sort network list
-for line in NETWORK1:
-    # Need to use -1 below because python arrays start at 0
-    # only print if  relasas > cutoff amd consurf = 9,
-    if RELSASA[line-1] > SASA_CUTOFF and CONSURF[line-1] == 9:
-        print("{:>3},".format(RESNAME[line-1]), "{:>4},".format(RESNUMBER[line-1]), "Bridge")
+# Look for bridge residues, ignore those duplicatig Stable/Unstable, only considre C=9
+for i in range(0, INDEX +1):
+    if RELSASA[i] > SASA_CUTOFF and CONSURF[i] == 9 and BRIDGE[i] == 1 and \
+        RESIDUE_ST[i] == 0 and RESIDUE_UN[i] == 0:
+        print("{:>3},".format(RESNAME[i]), "{:>4},".format(RESNUMBER[i]), "Bridge")
