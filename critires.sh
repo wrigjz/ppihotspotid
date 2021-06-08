@@ -24,7 +24,7 @@ $scripts/run_amber.sh
 
 python3 $scripts/extract_amber_energies.py
 
-# At this point we need to run consurf if we do not already have a consurf.grades file, 
+# At this point we need to run consurf if we do not already have a consurf.grades file,
 # use the two lines below to run it using the ATOM records to get the sequence
 # This is the prefered option
 $consurf_scripts/consurf_home.sh post_mini.pdb
@@ -36,10 +36,13 @@ PYTHONPATH=. python3 $scripts/get_consurf_home.py initial.grades consurf.txt
 #PYTHONPATH=. python3 $scripts/get_consurf_seqres.py seqres.fasta cons.fasta \
 #             seqres.grades consurf.txt >| seqres.txt
 
-# Or the alternative is to use the Consurf website grades, in which case use these 
+# Or the alternative is to use the Consurf website grades, in which case use these
 # lines below
-#python3 ../$scripts/get_consurf_numbers.py post_mini.pdb 
+#python3 ../$scripts/get_consurf_numbers.py post_mini.pdb
 #PYTHONPATH=. python3 ../$scripts/get_consurf_web.py consurf.grades consurf.txt
+
+# Just incase consurf failed create a dummy file
+touch consurf.txt
 
 # Sort out the SASA values
 $freesasa --config-file $scripts/protor.config --format=seq post_minix.pdb >| post_mini.sasa

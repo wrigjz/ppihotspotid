@@ -31,8 +31,11 @@ RESNUM = []
 PREVIOUS = "PREV"
 INDEX = -1
 PREV_CHAIN = "#"
+HETATM = 0
 # Read in the pdb file and process it
 for TMLINE in INPDB:
+    if TMLINE[0:6] == "HETATM":
+        HETATM = 1
     if TMLINE[0:4] == "ATOM":
         chain = TMLINE[21:22]
         if PREV_CHAIN == "#":
@@ -40,6 +43,7 @@ for TMLINE in INPDB:
             PREV_CHAIN = chain
         elif PREV_CHAIN != chain:
             CHAIN_COUNT += 1
+            PREV_CHAIN = chain
         resid_long = TMLINE[22:27] # Need to include A/B/C residues
         resid = resid_long.replace(" ", "") # Remove whitespace from resid
         if resid != PREVIOUS: # New residue append to the arrays
@@ -102,5 +106,8 @@ INPDB.close()
 if CHAIN_COUNT > 1:
     OUTTXT.write("Too many chains: ")
     OUTTXT.write(str(CHAIN_COUNT))
+    OUTTXT.write("\n")
+if HETATM == 1:
+    OUTTXT.write("Structure contains HETATMs ")
     OUTTXT.write("\n")
 OUTTXT.close()
