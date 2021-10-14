@@ -50,7 +50,7 @@ python3 $scripts/sasa_to_perc.py post_mini.sasa | awk '{print $3", "$4", "$8}' >
 
 # Prepare a non-H atom version for hbplus
 python3 $scripts/renum_rm_h.py post_minix.pdb post_mini_noh.pdb No
-sed -i -e 's/CYX/CYS/' -e 's/HID/HIS/' -e 's/HIE/HIS/' -e 's/HIP/HIS/' post_mini_noh.pdb
+sed -i -e 's/CYX/CYS/' -e 's/CYM/CYS/' -e 's/HID/HIS/' -e 's/HIE/HIS/' -e 's/HIP/HIS/' post_mini_noh.pdb
 
 # Run HBPLUS - needed for the vdw matrix
 $hbplus post_mini_noh.pdb -h 2.9 -d 4 -N -c

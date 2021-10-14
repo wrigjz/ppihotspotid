@@ -47,6 +47,7 @@ INTTAB = { # We calc'd these outselves from Me-X-Me
     'HIE' : '72.126',
     'HIP' : '96.460',
     'CYX' : '49.045',
+    'CYM' : '32.538',
     'ACE' : '-24.169',
     'NME' : '22.672',
 }
@@ -76,6 +77,7 @@ VDWTAB = { # We calc'd these outselves from Me-X-Me
     'HIE' : '-2.230',
     'HIP' : '-2.264',
     'CYX' : '-0.850',
+    'CYM' : '-0.861',
     'ACE' : '-0.371',
     'NME' : '-0.175',
 }
@@ -105,6 +107,7 @@ EELTAB = { # We calc'd these outselves from Me-X-Me
     'HIE' : '-61.313',
     'HIP' : '-21.475',
     'CYX' : '-47.969',
+    'CYM' : '-26.584',
     'ACE' : '-9.018',
     'NME' : '-17.830',
 }
@@ -134,6 +137,7 @@ EPOLTAB = { # We calc'd these outselves from Me-X-Me
     'HIE' : '-16.692',
     'HIP' : '-69.133',
     'CYX' : '-6.976',
+    'CYM' : '-80.352',
     'ACE' : '-7.045',
     'NME' : '-2.029',
 }
@@ -163,6 +167,7 @@ NPOLTAB = { # We calc'd these outselves from Me-X-Me
     'HIE' : '1.543',
     'HIP' : '1.579',
     'CYX' : '1.105',
+    'CYM' : '1.103',
     'ACE' : '0.903',
     'NME' : '0.776',
 }

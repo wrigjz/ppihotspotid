@@ -37,6 +37,7 @@ SASATAB = {
     'HIE' : float(198.65),
     'HIP' : float(199.04),
     'CYX' : float(144.44),
+    'CYM' : float(143.45),
     'ACE' : float(121.14),
     'NME' : float(99.49),
 }
