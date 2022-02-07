@@ -9,7 +9,7 @@ import sys
 import math
 
 # This script takes a PDB file as it's input and looks for potential Zinc binding CYS residues
-# python find_cym.pdb input.pdb output.pdb
+# python find_cym.py input.pdb output.pdb
 CUTOFF = 2.9
 
 if len(sys.argv) < 3:
