@@ -5,6 +5,7 @@
 ## to copy, modify and distribute this script but all modifications must be offered
 ## back to the original authors
 ###################################################################################################
+import sys
 
 # This script take the stable/unstable results and then maps them back to the original PDB numbers
 # Usage: PYTHONPATH=. python3 print_results.py
@@ -22,7 +23,7 @@ for CHAINLINE in CHAINFILE:
 CHAINFILE.close()
 
 #GLU,  84, Unstable
-INFILE = open("results_ambnum.txt")
+INFILE = open(sys.argv[1], "r")
 for LINE in INFILE:
     resname, resnumber, crititype = [x.strip() for x in LINE.split(",")]
     ORIGINAL = (NUMBERS.get(resnumber))
