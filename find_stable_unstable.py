@@ -76,7 +76,7 @@ if sys.argv[1] == "crit":
     CONSURF_CUTOFF = int(9)
 elif sys.argv[1] == "bind":
     SASA_CUTOFFST = float(0.0)
-    SASA_CUTOFFUN = float(35.0)
+    SASA_CUTOFFUN = float(30.0)
     SASA_CUTOFFBR = float(0.0)
     CONSURF_CUTOFF = int(8)
 else:
