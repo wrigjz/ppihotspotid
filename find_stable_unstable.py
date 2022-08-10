@@ -13,6 +13,10 @@
 # Then look for any other residues (SASA > cutoff & Kc == 9) that are vdw bonded to
 # either of the Stab/UnStab matrix pairs - we call these Bridge residues
 #
+# We also look for residues that are direct neighbours of Stable or Unstable ones
+# and select those nerighbours if their SASA is >= 10% and one of the following is true
+# Cons = 9 or ERank=1 or ERank=10
+#
 # Stable are the low numbers e.g. energy rank - high consurf = v negative (min)
 # Unstable are the high numbers e.g. energy rank + high consurf = v positive (max)
 #
@@ -59,9 +63,9 @@ PDB = [0 for i in range(0, INDEX)]
 RESIDUE_ST = [0 for i in range(0, INDEX)]
 RESIDUE_UN = [0 for i in range(0, INDEX)]
 BRIDGE = [0 for i in range(0, INDEX)]
+NEIGHBOUR = [0 for i in range(0, INDEX)]
 MATRIXNB2 = [[0 for i in range(0, INDEX)] for j in range(0, INDEX)] # For HB2 results
 RESIDUE1 = []
-RESIDUE2 = []
 
 
 # Are we critires or bindres?
@@ -72,7 +76,7 @@ if len(sys.argv) == 1:
 if sys.argv[1] == "crit":
     SASA_CUTOFFST = float(0.0)
     SASA_CUTOFFUN = float(0.0)
-    SASA_CUTOFFBR = float(0.0)
+    SASA_CUTOFFBR = float(10.0)
     CONSURF_CUTOFF = int(9)
 elif sys.argv[1] == "bind":
     SASA_CUTOFFST = float(0.0)
@@ -88,14 +92,15 @@ INDEX = -1
 for LINE in INFILE:
     if LINE[0:4] != "Resi":
         INDEX += 1
-        RESNUMBER[INDEX], RESNAME[INDEX], in3, INT_STAB[INDEX], VDW_STAB[INDEX], \
-            ELE_STAB[INDEX], POL_STAB[INDEX], NPL_STAB[INDEX], in0, GAS_ENR[INDEX], RANK[INDEX], \
-            GRADE[INDEX], in1, in2, PDB[INDEX] \
+        RESNUMBER[INDEX], RESNAME[INDEX], in0, INT_STAB[INDEX], VDW_STAB[INDEX], \
+            ELE_STAB[INDEX], POL_STAB[INDEX], NPL_STAB[INDEX], in1, GAS_ENR[INDEX], \
+            RANK[INDEX], in2, in3, in4, PDB[INDEX] \
                        = [x.strip() for x in LINE.split()]
-        CONSURF[INDEX] = int(in3)
-        RELSASA[INDEX] = float(in0)
-        MAX_VALUE[INDEX] = int(in1)
-        MIN_VALUE[INDEX] = int(in2)
+        CONSURF[INDEX] = int(in0)
+        RELSASA[INDEX] = float(in1)
+        GRADE[INDEX] = int(in2)
+        MAX_VALUE[INDEX] = int(in3)
+        MIN_VALUE[INDEX] = int(in4)
 INFILE.close()
 
 # Here we merge the resnumber, resname, max, min and relsasa into a tuple
@@ -177,7 +182,8 @@ for LINE in NB2FILE:
             MATRIXNB2[temp1][temp2] = 1 # Set the matrix for this residue pair to 1
             MATRIXNB2[temp2][temp1] = 1 # Set the matrix for this residue pair to 1
 
-# Here we try to find residues that form stable/unstable pairs
+# Here we try to find residues that form stable/unstable pairs, at the moment this is for
+# original critires and bindres method
 for i in range(0, INDEX +1): # for each of the residues
     for j in range(0, INDEX +1):
         if (RESIDUE_ST[i] == 1 and RESIDUE_UN[j] == 1) or \
@@ -187,17 +193,41 @@ for i in range(0, INDEX +1): # for each of the residues
                 RESIDUE1.append(j)
                 #print("Paired:",i,j)
 
-# Here we try to find residues that are attached to one of a parted couple
-i = -1
-for each in RESIDUE1:
-    i += 1
-    for j in range(0, INDEX +1):
-        if MATRIXNB2[RESIDUE1[i]][j] == 1:
-            #print("{:>3},".format(RESNAME[j]), "{:>4},".format(RESNUMBER[j]), "Bridge")
-            BRIDGE[j] = 1
+# Here we try to find residues that are attached to one of a parted couple, this is for
+# original critires and bindres method
+if sys.argv[1] == "bind":
+    i = -1
+    for each in RESIDUE1:
+        i += 1
+        for j in range(0, INDEX +1):
+            if MATRIXNB2[RESIDUE1[i]][j] == 1:
+                #print("{:>3},".format(RESNAME[j]), "{:>4},".format(RESNUMBER[j]), "Bridge")
+                BRIDGE[j] = 1
 
-# Look for bridge residues, ignore those duplicatig Stable/Unstable, only consider C=8 or 9
-for i in range(0, INDEX +1):
-    if RELSASA[i] > SASA_CUTOFFBR and CONSURF[i] >= CONSURF_CUTOFF and BRIDGE[i] == 1 and \
-        RESIDUE_ST[i] == 0 and RESIDUE_UN[i] == 0:
-        print("{:>3},".format(RESNAME[i]), "{:>4},".format(RESNUMBER[i]), "Bridge")
+# Here we try to find residues that are within vdW contact distance from a Stable or
+# Unstable residue, this is for critires method
+for i in range(0, INDEX +1): # for each of the residues
+    for j in range(0, INDEX +1):
+        if RESIDUE_ST[j] == 1 or RESIDUE_UN[j] == 1:
+            if MATRIXNB2[i][j]:
+                NEIGHBOUR[i] = 1
+                #print("Neighbours:",RESNUMBER[i],RESNUMBER[j])
+
+# Look for bridge residues, ignore those duplicatig Stable/Unstable,
+# This is for original critires and the bindres method
+if sys.argv[1] == "bind":
+    for i in range(0, INDEX +1):
+        if RELSASA[i] > SASA_CUTOFFBR and CONSURF[i] >= CONSURF_CUTOFF and BRIDGE[i] == 1 and \
+            RESIDUE_ST[i] == 0 and RESIDUE_UN[i] == 0:
+            print("{:>3},".format(RESNAME[i]), "{:>4},".format(RESNUMBER[i]), "Bridge")
+
+
+# Look for neighbour residues, ignore those duplicatig Stable/Unstable, only consider
+# Cons = 9, Energy rank = 1 or Energy rank = 10, sasa >= 10
+# This is for critires method
+if sys.argv[1] == "crit":
+    for i in range(0, INDEX +1):
+        if RELSASA[i] >= SASA_CUTOFFBR and RESIDUE_ST[i] == 0 and RESIDUE_UN[i] == 0 and \
+            NEIGHBOUR[i] == 1:
+            if (CONSURF[i] >= CONSURF_CUTOFF or GRADE[i] == 1 or GRADE[i] == 10):
+                print("{:>3},".format(RESNAME[i]), "{:>4},".format(RESNUMBER[i]), "Neighbour")

@@ -140,6 +140,8 @@ for j in range(MIN_RESNUM, MAX_RESNUM+1):
         RES_MAX = 5
         RES_MIN = 5
         CONSURF[j] = 0
+        GRADE[j] = 5
+        RANK[j] = 5
     RESNUMBER_STR = str(RESNUMBER[j])
     ORIGINAL = (NUMBERS.get(RESNUMBER_STR))
     if ORIGINAL is None:
