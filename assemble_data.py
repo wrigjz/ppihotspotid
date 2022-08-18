@@ -30,6 +30,7 @@
 #    consurf grades files
 #    stability file (comes from amber decomp after processing with extract_amber_energies.py)
 
+import os.path
 # Get the local dircetory and add it to the module search path
 from numbers import NUMBERS
 
@@ -47,8 +48,10 @@ ELE_STAB = [0 for i in range(0, NUM_LINES)]
 POL_STAB = [0 for i in range(0, NUM_LINES)]
 NPL_STAB = [0 for i in range(0, NUM_LINES)]
 CONSURF = [0 for i in range(0, NUM_LINES)]
+DSSP = ["L" for i in range(0, NUM_LINES)]
 GAS_ENE = [0 for i in range(0, NUM_LINES)]
 RANK = [0 for i in range(0, NUM_LINES)]
+HOTSPOT = [0 for i in range(0, NUM_LINES)]
 GRADE = [1 for i in range(0, NUM_LINES)]
 MAX_RESNUM = 0
 MIN_RESNUM = NUM_LINES
@@ -63,6 +66,17 @@ for LINE in INFILE:
     RELSASA[resnum] = float(in3)
 INFILE.close()
 
+# Now allocate the hotspot residues if the file exists
+# Need a reverse dictionary for this to work:
+NUMBERS_REV = {v:k for k,v in NUMBERS.items()}
+if os.path.isfile("hotspots.txt"):
+    INFILE = open("hotspots.txt", "r")
+    for LINE in INFILE:
+        resno = LINE.strip()
+        ORIGINAL = (NUMBERS_REV.get(resno))
+        HOTSPOT[int(ORIGINAL)] = 1
+    INFILE.close()
+
 # Now we allocate the CONSURF values
 INFILE = open("consurf.txt", "r")
 for LINE in INFILE:
@@ -71,6 +85,18 @@ for LINE in INFILE:
     CONSURF[resnum] = int(in2)
 INFILE.close()
 
+# Now we allocate the DSSP values
+INFILE = open("post_mini_noh.dssp", "r")
+RESFOUND = 0
+for LINE in INFILE:
+    if LINE[5:12] == "RESIDUE": # Look for the word RESIDUE in a sertain position
+        RESFOUND = 1
+        continue
+    if RESFOUND == 1:
+        LIST = int(LINE[6:11].strip())
+        if LINE[16:17] != " ":
+            DSSP[LIST] = LINE[16:17]
+INFILE.close()
 
 # Now we allocate the energy values
 INFILE = open("stability.txt", "r")
@@ -131,7 +157,7 @@ for k in range(0, 10):
         GRADE[SORTED_GAS[j][0]] = 10 - k # We want most stable to be 10, least to be 1
 
 # Print out the results table
-print("Resi Ty cons   int    vdw    ele    pol    npl   sasa     gas_e  rank grade max min  PDB")
+print("Resi Ty cons   int    vdw    ele    pol    npl   sasa     gas_e  rank grade max min  PDB  DSSP HS")
 for j in range(MIN_RESNUM, MAX_RESNUM+1):
     RES_MAX = GRADE[j] + CONSURF[j]
     RES_MIN = GRADE[j] - CONSURF[j]
@@ -152,4 +178,5 @@ for j in range(MIN_RESNUM, MAX_RESNUM+1):
           "{:6.1f}".format(POL_STAB[j]), "{:6.1f}".format(NPL_STAB[j]), \
           "{:6.1f}".format(RELSASA[j]), "{:9.3f}".format(GAS_ENE[j]), \
           "  {:>2}".format(RANK[j]), "   {:>2}".format(GRADE[j]), \
-          "{:>3}".format(RES_MAX), "{:>3}".format(RES_MIN), " {:>4}".format(ORIGINAL))
+          "{:>3}".format(RES_MAX), "{:>3}".format(RES_MIN), " {:>4}".format(ORIGINAL),\
+          "{:>3}".format(DSSP[j]), "{:>3}".format(HOTSPOT[j]))

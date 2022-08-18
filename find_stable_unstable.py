@@ -17,8 +17,8 @@
 # and select those nerighbours if their SASA is >= 10% and one of the following is true
 # Cons = 9 or ERank=1 or ERank=10
 #
-# Stable are the low numbers e.g. energy rank - high consurf = v negative (min)
-# Unstable are the high numbers e.g. energy rank + high consurf = v positive (max)
+# Stable are the high numbers e.g. energy rank + high consurf = v positive (max)
+# UnStable are the low numbers e.g. energy rank - high consurf = v negative (min)
 #
 # Even though we read in the PDB numbers we have to use the internal scheme in order
 # to remain consistent with hbplus
@@ -60,13 +60,14 @@ STABLE_NUMBER = [0 for i in range(0, INDEX)]
 UNSTABLE_NAME = [0 for i in range(0, INDEX)]
 UNSTABLE_NUMBER = [0 for i in range(0, INDEX)]
 PDB = [0 for i in range(0, INDEX)]
+HOTSPOT = [0 for i in range(0, INDEX)]
+DSSP = ["L" for i in range(0, INDEX)]
 RESIDUE_ST = [0 for i in range(0, INDEX)]
 RESIDUE_UN = [0 for i in range(0, INDEX)]
 BRIDGE = [0 for i in range(0, INDEX)]
 NEIGHBOUR = [0 for i in range(0, INDEX)]
 MATRIXNB2 = [[0 for i in range(0, INDEX)] for j in range(0, INDEX)] # For HB2 results
 RESIDUE1 = []
-
 
 # Are we critires or bindres?
 if len(sys.argv) == 1:
@@ -77,6 +78,11 @@ if sys.argv[1] == "crit":
     SASA_CUTOFFST = float(0.0)
     SASA_CUTOFFUN = float(0.0)
     SASA_CUTOFFBR = float(10.0)
+    CONSURF_CUTOFF = int(9)
+elif sys.argv[1] == "orig":
+    SASA_CUTOFFST = float(0.0)
+    SASA_CUTOFFUN = float(0.0)
+    SASA_CUTOFFBR = float(0.0)
     CONSURF_CUTOFF = int(9)
 elif sys.argv[1] == "bind":
     SASA_CUTOFFST = float(0.0)
@@ -94,7 +100,7 @@ for LINE in INFILE:
         INDEX += 1
         RESNUMBER[INDEX], RESNAME[INDEX], in0, INT_STAB[INDEX], VDW_STAB[INDEX], \
             ELE_STAB[INDEX], POL_STAB[INDEX], NPL_STAB[INDEX], in1, GAS_ENR[INDEX], \
-            RANK[INDEX], in2, in3, in4, PDB[INDEX] \
+            RANK[INDEX], in2, in3, in4, PDB[INDEX], DSSP[INDEX], HOTSPOT[INDEX] \
                        = [x.strip() for x in LINE.split()]
         CONSURF[INDEX] = int(in0)
         RELSASA[INDEX] = float(in1)
@@ -105,7 +111,7 @@ INFILE.close()
 
 # Here we merge the resnumber, resname, max, min and relsasa into a tuple
 # and then remove where sasa <= cutoff
-MERGED_LIST_SASA = tuple(zip(RESNUMBER, RESNAME, MAX_VALUE, MIN_VALUE, RELSASA))
+MERGED_LIST_SASA = tuple(zip(RESNUMBER, RESNAME, MAX_VALUE, MIN_VALUE, RELSASA, HOTSPOT))
 MERGED_LIST_ST = list(filter(lambda a: a[4] > SASA_CUTOFFST, MERGED_LIST_SASA)) # ST where > ST_SASA
 MERGED_LIST_UN = list(filter(lambda a: a[4] > SASA_CUTOFFUN, MERGED_LIST_SASA)) # UN where > UN_SASA
 MERGED_LIST_LEN_ST = len(MERGED_LIST_ST)
@@ -145,7 +151,10 @@ for i in range(0, MERGED_LIST_LEN_ST):
         INDEX_ST += 1
         NAME = MAX_ARRAY[i][1]
         NUMBER = MAX_ARRAY[i][0]
-        print("{:>3},".format(NAME), "{:>4},".format(NUMBER), "Stable")
+        if MAX_ARRAY[i][5] == "1":
+             print("{:>3},".format(NAME), "{:>4},".format(NUMBER), "Stable Hotspot")
+        else:
+             print("{:>3},".format(NAME), "{:>4},".format(NUMBER), "Stable")
         STABLE_NAME[INDEX_ST] = NAME
         STABLE_NUMBER[INDEX_ST] = int(NUMBER)
         TEMP1 = int(NUMBER) -1
@@ -158,7 +167,10 @@ for i in range(0, MERGED_LIST_LEN_UN):
         INDEX_UN += 1
         NAME = MIN_ARRAY[i][1]
         NUMBER = MIN_ARRAY[i][0]
-        print("{:>3},".format(NAME), "{:>4},".format(NUMBER), "Unstable")
+        if MIN_ARRAY[i][5] == "1":
+             print("{:>3},".format(NAME), "{:>4},".format(NUMBER), "Unstable Hotspot")
+        else:
+             print("{:>3},".format(NAME), "{:>4},".format(NUMBER), "Unstable")
         UNSTABLE_NAME[INDEX_UN] = NAME
         UNSTABLE_NUMBER[INDEX_UN] = int(NUMBER)
         TEMP1 = int(NUMBER) -1
@@ -195,14 +207,13 @@ for i in range(0, INDEX +1): # for each of the residues
 
 # Here we try to find residues that are attached to one of a parted couple, this is for
 # original critires and bindres method
-if sys.argv[1] == "bind":
-    i = -1
-    for each in RESIDUE1:
-        i += 1
-        for j in range(0, INDEX +1):
-            if MATRIXNB2[RESIDUE1[i]][j] == 1:
-                #print("{:>3},".format(RESNAME[j]), "{:>4},".format(RESNUMBER[j]), "Bridge")
-                BRIDGE[j] = 1
+i = -1
+for each in RESIDUE1:
+    i += 1
+    for j in range(0, INDEX +1):
+        if MATRIXNB2[RESIDUE1[i]][j] == 1:
+            #print("{:>3},".format(RESNAME[j]), "{:>4},".format(RESNUMBER[j]), "Bridge")
+            BRIDGE[j] = 1
 
 # Here we try to find residues that are within vdW contact distance from a Stable or
 # Unstable residue, this is for critires method
@@ -213,13 +224,17 @@ for i in range(0, INDEX +1): # for each of the residues
                 NEIGHBOUR[i] = 1
                 #print("Neighbours:",RESNUMBER[i],RESNUMBER[j])
 
+
 # Look for bridge residues, ignore those duplicatig Stable/Unstable,
 # This is for original critires and the bindres method
-if sys.argv[1] == "bind":
+if sys.argv[1] == "bind" or sys.argv[1] == "orig":
     for i in range(0, INDEX +1):
         if RELSASA[i] > SASA_CUTOFFBR and CONSURF[i] >= CONSURF_CUTOFF and BRIDGE[i] == 1 and \
             RESIDUE_ST[i] == 0 and RESIDUE_UN[i] == 0:
-            print("{:>3},".format(RESNAME[i]), "{:>4},".format(RESNUMBER[i]), "Bridge")
+            if HOTSPOT[i] == "1":
+                print("{:>3},".format(RESNAME[i]), "{:>4},".format(RESNUMBER[i]), "Bridge Hotspot")
+            else:
+                print("{:>3},".format(RESNAME[i]), "{:>4},".format(RESNUMBER[i]), "Bridge")
 
 
 # Look for neighbour residues, ignore those duplicatig Stable/Unstable, only consider
@@ -228,6 +243,9 @@ if sys.argv[1] == "bind":
 if sys.argv[1] == "crit":
     for i in range(0, INDEX +1):
         if RELSASA[i] >= SASA_CUTOFFBR and RESIDUE_ST[i] == 0 and RESIDUE_UN[i] == 0 and \
-            NEIGHBOUR[i] == 1:
+            NEIGHBOUR[i] == 1 and DSSP[i] != "L":
             if (CONSURF[i] >= CONSURF_CUTOFF or GRADE[i] == 1 or GRADE[i] == 10):
-                print("{:>3},".format(RESNAME[i]), "{:>4},".format(RESNUMBER[i]), "Neighbour")
+                if HOTSPOT[i] == "1":
+                    print("{:>3},".format(RESNAME[i]), "{:>4},".format(RESNUMBER[i]), "Neighbour Hotspot")
+                else:
+                    print("{:>3},".format(RESNAME[i]), "{:>4},".format(RESNUMBER[i]), "Neighbour")

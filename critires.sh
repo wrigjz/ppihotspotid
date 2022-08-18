@@ -8,6 +8,7 @@
 # Simple script to perform a critires job
 
 export hbplus=/home/programs/hbplus-3.06.linux/hbplus
+export dssp=/home/programs/dssp-2.2.1/dssp
 export freesasa=/home/programs/freesasa-2.03/linux/bin/freesasa
 export scripts=../critires_scripts
 export consurf_scripts=../consurf_scripts
@@ -54,6 +55,9 @@ sed -i -e 's/CYX/CYS/' -e 's/CYM/CYS/' -e 's/HID/HIS/' -e 's/HIE/HIS/' -e 's/HIP
 
 # Run HBPLUS - needed for the vdw matrix
 $hbplus post_mini_noh.pdb -h 2.9 -d 4 -N -c
+
+# Run DSSP - needed for 2nd structure
+$dssp -i post_mini_noh.pdb -o post_mini_noh.dssp
 
 ## This is for Jon's binding progrect
 #touch wild_bind.txt # needed for checking on binding sites
