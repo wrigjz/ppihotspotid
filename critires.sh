@@ -70,7 +70,7 @@ PYTHONPATH=. python3 $scripts/assemble_data.py >| assemble.txt
 python3 $scripts/find_stable_unstable.py crit >| results_ambnum.txt
 PYTHONPATH=. python3 $scripts/print_results.py results_ambnum.txt | grep Stable   | sort -g -k 2 >| results.txt
 PYTHONPATH=. python3 $scripts/print_results.py results_ambnum.txt | grep Unstable | sort -g -k 2 >> results.txt
-PYTHONPATH=. python3 $scripts/print_results.py results_ambnum.txt | grep Bridge   | sort -g -k 2 >> results.txt
+PYTHONPATH=. python3 $scripts/print_results.py results_ambnum.txt | grep Neighbour   | sort -g -k 2 >> results.txt
 
 # Get the BindRes stable/unstabla and results in the PDB numbering scheme
 python3 $scripts/find_stable_unstable.py bind >| results_bind_ambnum.txt
