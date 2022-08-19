@@ -93,9 +93,11 @@ for LINE in INFILE:
         RESFOUND = 1
         continue
     if RESFOUND == 1:
-        LIST = int(LINE[6:11].strip())
-        if LINE[16:17] != " ":
-            DSSP[LIST] = LINE[16:17]
+        TMP = LINE[6:11].strip()
+        if TMP.isdigit():
+            LIST = int(LINE[6:11].strip())
+            if LINE[16:17] != " ":
+                DSSP[LIST] = LINE[16:17]
 INFILE.close()
 
 # Now we allocate the energy values
