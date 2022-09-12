@@ -8,7 +8,7 @@
 # Simple script to perform a critires job
 
 export hbplus=/home/programs/hbplus-3.06.linux/hbplus
-export dssp=/home/programs/dssp-2.2.1/dssp
+export dssp=/home/programs/xssp-3.0.5/bin.linux/mkdssp
 export freesasa=/home/programs/freesasa-2.03/linux/bin/freesasa
 export scripts=../critires_scripts
 export consurf_scripts=../consurf_scripts
