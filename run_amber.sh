@@ -5,7 +5,7 @@
 ## to copy, modify and distribute this script but all modifications must be offered
 ## back to the original authors
 ###################################################################################################
-# This is a script to take a chain, find the gaps and terminal residues, cao 
+# This is a script to take a chain, find the gaps and terminal residues, cao
 # them with ACE/NME, handle the protonation steate of HIS
 # and then perform a energy minimization with amber
 # followed by an internal energy evaluation for each residue
@@ -23,13 +23,26 @@ python3 $scripts/renum_rm_h.py input.pdb initial.pdb renumber.txt
 
 # Run with --reduce to get an idea of HIS protonation states
 $AMBERHOME/bin/pdb4amber --reduce --noter initial.pdb -o process.pdb >| process.txt 2>&1
-python $scripts/find_gaps.py process.pdb process.txt process1.pdb
+python3 $scripts/find_gaps.py process.pdb process.txt process1.pdb
 
 $AMBERHOME/bin/tleap -f $scripts/leapin0
 python3 $scripts/add_ace_nme.py process2.pdb processed.pdb
 
+
+# Generate the final leapin1 file
+cat >| leapin1 << EOF2
+source leaprc.protein.ff19SB
+set default PBradii mbondi2
+trx = loadpdb processed.pdb
+EOF2
+python3 $scripts/disu.py processed.pdb >> leapin1
+cat >> leapin1 << EOF3
+saveamberparm trx mini.top pre_mini.crd
+quit
+EOF3
+
 # start the actual amber/fed process
-$AMBERHOME/bin/tleap -f $scripts/leapin1
+$AMBERHOME/bin/tleap -f leapin1
 
 # Run this to get the renumbering scheme we need later
 $AMBERHOME/bin/pdb4amber processed.pdb -o pre_mini.pdb  >| pre_mini.txt 2>&1
