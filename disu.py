@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 ###################################################################################################
-## Jon Wright, IBMS, Immunwork, Taipei, Taiwan
+## Jon Wright, IBMS, Academia Sinica, Taipei, 11529, Taiwan
 ## These files are licensed under the GLP ver 3, essentially you have the right
 ## to copy, modify and distribute this script but all modifications must be offered
 ## back to the original authors
@@ -9,8 +9,6 @@ import sys
 import math
 
 # This script takes a PDB file as it's input and looks for potential disulphide bridges
-# It then writes out a bond command for tleap to use in order to make the job
-# PDB files need to be prepared before hand with CYX used instead of CYS
 CUTOFF = 2.9
 
 if len(sys.argv) < 2:
@@ -35,8 +33,9 @@ if sys.argv[1] == "processed.pdb":
     SEGID = "trx"
 
 #ATOM  16350  SG  CYX    19    -101.448  -6.936 -25.149  1.00 64.73      INSB
-# Now process the PDB file, we need to track the ACE and NME residues as tleap increments
-# it's internal residue numbering each time it sees one
+# Now process the PDB file,
+# When we find the " H2 " line we need to convert this to "ACE  C" and change the resid number too
+# We save this for the 2nd time we process the PDB file
 INDEX = -1
 for TMLINE in INPDB:
     # Keep a count of ACE and NME residues
@@ -48,13 +47,14 @@ for TMLINE in INPDB:
         INDEX += 1
         SEGI.append(TMLINE[72:76])
         TEMP = int(TMLINE[22:26])
-        TEMP += COUNTER
+        if COUNTER != -1: # Only do this if there are ACE/NME caps
+            TEMP += COUNTER
         RESID.append(TEMP)
         XPOS.append(TMLINE[30:38])
         YPOS.append(TMLINE[38:46])
         ZPOS.append(TMLINE[46:54])
 
-# Now loop over the CYX SG's and look for potential disu bonds
+# Now loop over the CYS SG's and look for potential disu bonds
 for I in range(0,INDEX):
     for J in range(I+1,INDEX+1):
         xdist = (float(XPOS[I]) - float(XPOS[J]))**2
