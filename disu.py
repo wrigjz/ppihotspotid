@@ -22,6 +22,7 @@ RESID = []
 XPOS = []
 YPOS = []
 ZPOS = []
+COUNTER = -1
 
 SEGID = "UNK"
 if sys.argv[1] == "processed_rec.pdb":
@@ -37,10 +38,17 @@ if sys.argv[1] == "processed.pdb":
 # We save this for the 2nd time we process the PDB file
 INDEX = -1
 for TMLINE in INPDB:
+    # Keep a count of ACE and NME residues
+    if TMLINE[13:14] == "C" and TMLINE[17:20] == "ACE":
+        COUNTER += 1
+    if TMLINE[13:14] == "N" and TMLINE[17:20] == "NME":
+        COUNTER += 1
     if TMLINE[13:15] == "SG" and TMLINE[17:20] == "CYX":
         INDEX += 1
         SEGI.append(TMLINE[72:76])
-        RESID.append(TMLINE[22:26])
+        TEMP = int(TMLINE[22:26])
+        TEMP += COUNTER
+        RESID.append(TEMP)
         XPOS.append(TMLINE[30:38])
         YPOS.append(TMLINE[38:46])
         ZPOS.append(TMLINE[46:54])
@@ -53,6 +61,6 @@ for I in range(0,INDEX):
         zdist = (float(ZPOS[I]) - float(ZPOS[J]))**2
         dist = math.sqrt(xdist + ydist + zdist)
         if dist <= CUTOFF:
-            OUTPUT = "bond " + SEGID + "." + RESID[I].strip() +\
-                ".SG " + SEGID + "." + RESID[J].strip() + ".SG"
+            OUTPUT = "bond " + SEGID + "." + str(RESID[I]) +\
+                ".SG " + SEGID + "." + str(RESID[J]) + ".SG"
             print(OUTPUT)
