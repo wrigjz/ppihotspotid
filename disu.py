@@ -34,8 +34,6 @@ if sys.argv[1] == "processed.pdb":
 
 #ATOM  16350  SG  CYX    19    -101.448  -6.936 -25.149  1.00 64.73      INSB
 # Now process the PDB file,
-# When we find the " H2 " line we need to convert this to "ACE  C" and change the resid number too
-# We save this for the 2nd time we process the PDB file
 INDEX = -1
 for TMLINE in INPDB:
     # Keep a count of ACE and NME residues
