@@ -6,7 +6,7 @@
 ## back to the original authors
 ###################################################################################################
 # Simple script to try take the assembled data
-# and then locate the top 4 (or equal) Max and bottom 4 (or equal) min values
+# and then locate X percent of residues with the largest Max /Min values
 # from column 14 and 15, we discard any that have a sasa < a cutoff
 #
 # We then look for any Stable residues vdw bonded to any Unstable residues (Matrix pair)
@@ -26,7 +26,10 @@
 #Resi Ty bind cons   int    vdw    ele    pol    npl   sasa  gas_e rank  rern max min cle
 #  1 ACE    0   0   32.0   -0.6  -13.8   -0.3   -0.3   71.3   17.6    3     1   1   1   0
 #
-# usage: python3 find_stable_unstable.py >| results_ambnum.txt
+# usage: python3 find_stable_unstable.py crit 5 >| results_ambnum.txt
+# Two arguments are needed crit, orig, bind - these choose either the neighbour or
+# bridge or bindres method
+# the 2nd argument is the percentage number of residues to be predicted
 # files needed:
 #    assemble.txt - comes from using the assemble_data.py script
 #    vdw contact file - usually a nb2 file from hbplus
@@ -55,10 +58,6 @@ RANK = [0 for i in range(0, INDEX)]
 GRADE = [1 for i in range(0, INDEX)]
 MAX_VALUE = [0 for i in range(0, INDEX)]
 MIN_VALUE = [0 for i in range(0, INDEX)]
-STABLE_NAME = [0 for i in range(0, INDEX)]
-STABLE_NUMBER = [0 for i in range(0, INDEX)]
-UNSTABLE_NAME = [0 for i in range(0, INDEX)]
-UNSTABLE_NUMBER = [0 for i in range(0, INDEX)]
 PDB = [0 for i in range(0, INDEX)]
 HOTSPOT = [0 for i in range(0, INDEX)]
 DSSP = ["L" for i in range(0, INDEX)]
@@ -71,7 +70,7 @@ RESIDUE1 = []
 
 # Are we critires or bindres?
 if len(sys.argv) == 1:
-    print("Needs two arguments giving a either crit or bind and a percentage cutoff\n")
+    print("Needs two arguments giving a either crit or orig or bind and a percentage cutoff\n")
     sys.exit(0)
 
 if sys.argv[1] == "crit":
@@ -90,11 +89,11 @@ elif sys.argv[1] == "bind":
     SASA_CUTOFFBR = float(0.0)
     CONSURF_CUTOFF = int(8)
 else:
-    print("Needs a argument giving a either crit or bind\n")
+    print("Needs a argument giving a either crit or orig or bind and a percentage\n")
     sys.exit(0)
 
-
 INDEX = -1
+# Read in the asssemble file and save what we need into arrays
 for LINE in INFILE:
     if LINE[0:4] != "Resi":
         INDEX += 1
@@ -121,21 +120,10 @@ MERGED_LIST_LEN_UN = len(MERGED_LIST_UN)
 MAX_ARRAY = sorted(MERGED_LIST_ST, key=lambda x: x[2], reverse=True)
 MIN_ARRAY = sorted(MERGED_LIST_UN, key=lambda x: x[3])
 
-#pprint(MIN_ARRAY)
-
-# At this point we take the max and min values and use all residues with the same value
-# First off we get the number of residues in each of the MAX and MIN ARRAYS
-NO_OF_MAX=len(MAX_ARRAY)
-NO_OF_MIN=len(MIN_ARRAY)
-# We will now set the MAX_NUMBER and MIN_NUMBER
-PERCENT = len(MERGED_LIST_SASA) * float(sys.argv[2]) / 100
-
-INDEX_ST = -1
-INDEX_UN = -1
-
-# Find the initial numbers for looping over
+# At this point we find the largest the max and min values and the No of residues for the percentage
 MAXS_NUMBER = MAX_ARRAY[0][2] # Initial numbers for loops
 MINS_NUMBER = MIN_ARRAY[0][3] # Initial numbers for loops
+PERCENT = len(MERGED_LIST_SASA) * float(sys.argv[2]) / 100
 
 PRINT = 0 # Flag to say this is a print run
 
@@ -143,18 +131,16 @@ PRINT = 0 # Flag to say this is a print run
 for PER_INDEX in range (0,8):
     MAX_NUMBER = MAXS_NUMBER - PER_INDEX # Decrease the MAX_NUMBER each loop
     MIN_NUMBER = MINS_NUMBER + PER_INDEX # Increase the MAX_NUMBER each loop
-    #print(MAX_NUMBER, MIN_NUMBER,PRINT)
-    if PRINT == 1: # If this is a print repeat then we add one to each number
+    if PRINT == 1: # If this is a print repeat then we add one to each number as this is the 2nd
+                   # time we run the loop with these MAX MIN values
         MAX_NUMBER = MAX_NUMBER + 1
         MIN_NUMBER = MIN_NUMBER - 1
-    #print(MAX_NUMBER, MIN_NUMBER,PRINT)
-    COUNT = 0 # Counter to see how many hit we have found
+    COUNT = 0 # Counter to see how many hits we have found
 
     #print("Stable conserved")
     for i in range(0, MERGED_LIST_LEN_ST):
         if MAX_ARRAY[i][2] >= MAX_NUMBER:
             COUNT += 1
-            INDEX_ST += 1
             NAME = MAX_ARRAY[i][1]
             NUMBER = MAX_ARRAY[i][0]
             if PRINT == 1:
@@ -162,8 +148,6 @@ for PER_INDEX in range (0,8):
                     print("{:>3},".format(NAME), "{:>4},".format(NUMBER), "Stable Hotspot")
                 else:
                     print("{:>3},".format(NAME), "{:>4},".format(NUMBER), "Stable")
-            STABLE_NAME[INDEX_ST] = NAME
-            STABLE_NUMBER[INDEX_ST] = int(NUMBER)
             TEMP1 = int(NUMBER) -1
             RESIDUE_ST[TEMP1] = 1
             #print(RESIDUE_ST[TEMP1], NUMBER, TEMP1)
@@ -172,7 +156,6 @@ for PER_INDEX in range (0,8):
     for i in range(0, MERGED_LIST_LEN_UN):
         if MIN_ARRAY[i][3] <= MIN_NUMBER:
             COUNT += 1
-            INDEX_UN += 1
             NAME = MIN_ARRAY[i][1]
             NUMBER = MIN_ARRAY[i][0]
             if PRINT == 1:
@@ -180,8 +163,6 @@ for PER_INDEX in range (0,8):
                     print("{:>3},".format(NAME), "{:>4},".format(NUMBER), "Unstable Hotspot")
                 else:
                     print("{:>3},".format(NAME), "{:>4},".format(NUMBER), "Unstable")
-            UNSTABLE_NAME[INDEX_UN] = NAME
-            UNSTABLE_NUMBER[INDEX_UN] = int(NUMBER)
             TEMP1 = int(NUMBER) -1
             RESIDUE_UN[TEMP1] = 1
             #print(RESIDUE_UN[TEMP1], NUMBER, TEMP1)
@@ -261,12 +242,11 @@ for PER_INDEX in range (0,8):
                         else:
                             print("{:>3},".format(RESNAME[i]), "{:>4},".format(RESNUMBER[i]), "Neighbour")
 
+# Now we check if the number of COUNT residues is >= to the number of residues (%) we want to predict
     if COUNT >= PERCENT:
-        #print("COUNT ", COUNT, PERCENT)
         if PRINT == 0: # If PRINT is still zero then we set it to 1 and run the loop again
             PRINT = 1
-            #print("END OF LOOP")
             continue
-    if PRINT == 1:
+    if PRINT == 1: # This is run was the print run so we can exit the loop
         break
 print(COUNT, MAX_NUMBER, MIN_NUMBER, PERCENT, len(MERGED_LIST_SASA))
