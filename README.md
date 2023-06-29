@@ -7,7 +7,9 @@
 ###################################################################################################
 This is a reimplimentation of CritiRes in python ver 3+, such as anaconda
 
-Requirements are AmberTools, hbplus and FreeSASA
+Requirements are AmberTools, hbplusi, FreeSASA and xssp
+You will also need to provide conservation values for each residues, our conservation code
+can be found at https://github.com/wrigjz/conservation_python
 
 the directory structure should be something like this
 
