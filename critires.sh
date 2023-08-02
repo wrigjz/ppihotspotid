@@ -20,6 +20,7 @@ source /home/programs/anaconda/linux-5.3.6/init.sh
 if [ $# -eq 0 ]
     then
         echo "Please give a percentage for residues you want to predict as a total of the chain"
+        echo "If you only want the most and least stable then set the percentage to 0"
         echo e.g. critires.sh 5
         exit
 fi
