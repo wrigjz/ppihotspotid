@@ -6,6 +6,9 @@
 ## back to the original authors
 ###################################################################################################
 # Simple script to perform a critires job
+# You need to make sure that a input.pdb file exists in the directory
+# and that you give a percentage for the number of residues to predict
+# e.g. critires.sh 5
 
 export hbplus=/home/programs/hbplus-3.06.linux/hbplus
 export dssp=/home/programs/xssp-3.0.5/bin.linux/mkdssp
@@ -13,6 +16,13 @@ export freesasa=/home/programs/freesasa-2.03/linux/bin/freesasa
 export scripts=../critires_scripts
 export consurf_scripts=../consurf_scripts
 source /home/programs/anaconda/linux-5.3.6/init.sh
+
+if [ $# -eq 0 ]
+    then
+        echo "Please give a percentage for residues you want to predict as a total of the chain"
+        echo e.g. critires.sh 5
+        exit
+fi
 
 # Start off by running checking for missing backbone atoms in the PDB file and running AMBER
 python3 $scripts/check_bb.py input.pdb missing.txt
@@ -67,7 +77,8 @@ $scripts/set_numbers.sh
 PYTHONPATH=. python3 $scripts/assemble_data.py >| assemble.txt
 
 # Get the CritiRes stable/unstabla and results in the PDB numbering scheme
-python3 $scripts/find_stable_unstable.py crit >| results_ambnum.txt
+#python3 $scripts/find_stable_unstable.py crit >| results_ambnum.txt
+python3 $scripts/find_stable_unstable_percent.py.py crit $1 >| results_ambnum.txt
 PYTHONPATH=. python3 $scripts/print_results.py results_ambnum.txt | grep Stable   | sort -g -k 2 >| results.txt
 PYTHONPATH=. python3 $scripts/print_results.py results_ambnum.txt | grep Unstable | sort -g -k 2 >> results.txt
 PYTHONPATH=. python3 $scripts/print_results.py results_ambnum.txt | grep Neighbour   | sort -g -k 2 >> results.txt
