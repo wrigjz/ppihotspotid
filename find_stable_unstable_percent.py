@@ -246,12 +246,12 @@ for PER_INDEX in range (0,8):
                             print("{:>3},".format(RESNAME[i]), "{:>4},".format(RESNUMBER[i]), "Neighbour")
 
 # Now we check if the number of COUNT residues is >= to the number of residues (%) we want to predict
-    print(float(COUNT), MAX_NUMBER, MIN_NUMBER, float(PERCENT), float(len(MERGED_LIST_SASA)),\
-          float(len(MERGED_LIST_NOACE)))
+    #print(float(COUNT), MAX_NUMBER, MIN_NUMBER, float(PERCENT), float(len(MERGED_LIST_SASA)),\
+    #      float(len(MERGED_LIST_NOACE)))
     if COUNT >= PERCENT:
         if PRINT == 0: # If PRINT is still zero then we set it to 1 and run the loop again
             PRINT = 1
             continue
     if PRINT == 1: # This is run was the print run so we can exit the loop
         break
-print(COUNT, MAX_NUMBER, MIN_NUMBER, PERCENT, len(MERGED_LIST_NOACE))
+#print(COUNT, MAX_NUMBER, MIN_NUMBER, PERCENT, len(MERGED_LIST_NOACE))
