@@ -14,7 +14,7 @@
 # either of the Stab/UnStab matrix pairs - we call these Bridge residues
 #
 # We also look for residues that are direct neighbours of Stable or Unstable ones
-# and select those nerighbours if their SASA is >= 10% and one of the following is true
+# and select those neighbours if their SASA is >= 10% and one of the following is true
 # Cons = 9 or ERank=1 or ERank=10
 #
 # Stable are the high numbers e.g. energy rank + high consurf = v positive (max)
