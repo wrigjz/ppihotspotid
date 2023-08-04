@@ -13,21 +13,18 @@ can be found at https://github.com/wrigjz/conservation_python
 
 the directory structure should be something like this
 
-top/critires_scripts
+root/critires_scripts # (These scripts)
 
-   /consurf_scripts (If you want to use our consurf implimentation)
+root/consurf_scripts # (If you want to use our consurf implimentation)
 
-   /pdbidchain    e.g. 1fnfa
-
-              /input.pdb   this is a single chain from a pdb file
+root/working/input.pdb # this is a single chain from a pdb file and must be called input.pdb
 
 the pdb file can be prepared using the get_pdb_get_from_archive.py script by giving it a file with a list of pdb and chain codes in a format such as 1TSR B etc etc, you may need to edit the script to point to your own local pdb archive
-
 
 Critires can take a commandline argument to give a minimum number of residues as a percentage to return
 If all you want are the most and least stable then set the percentage to 0
 
-cd into pdbidchain and to get the 5% most and least stable residues run
+cd into working and to get the 5% most and least stable residues run
         ../critires_scripts/critires.sh 5
 
 then critires should run, the default is to also run a local version of consurf,  which can be ignored by editing the critires.sh file to comment out a few lines and uncomment some others, you can also choose to run consurf and use the SEQRES records instead
