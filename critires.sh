@@ -15,7 +15,7 @@ export dssp=/home/programs/xssp-3.0.5/bin.linux/mkdssp
 export freesasa=/home/programs/freesasa-2.03/linux/bin/freesasa
 export scripts=../critires_scripts
 export consurf_scripts=../consurf_scripts
-source /home/programs/anaconda/linux-5.3.6/init.sh
+source /home/programs/anaconda/linux_202105/init.sh
 
 if [ $# -eq 0 ]
     then
