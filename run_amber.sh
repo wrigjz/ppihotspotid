@@ -12,7 +12,7 @@
 
 # set up the environment
 source /home/programs/ambertools20/amber20/amber.sh
-source /home/programs/anaconda/linux_202105/init.sh
+source /home/programs/anaconda/linux_202307/init.sh
 scripts=../critires_scripts
 
 # Need to find broken ends and add TER and ACE and NME
