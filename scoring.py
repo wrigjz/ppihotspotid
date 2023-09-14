@@ -31,5 +31,6 @@ PREDICTIONS = PREDICTOR.predict(PRED_DATA)
 
 # Write out the results
 RESULT = INDATA[['Ty','Resi']].join(PREDICTIONS)
-POSITIVES = RESULT.loc[RESULT['labels'] == 'P']
+RESULT.columns = ['Type', 'Res#', 'Critical']
+POSITIVES = RESULT.loc[RESULT['Critical'] == 'P']
 POSITIVES.to_csv(CSV_PREDICTIONS_OUTPUT_PATH,header=None, index=False)
