@@ -26,11 +26,10 @@ INDATA = pd.read_csv(ASSEMBLE_FILE_PATH,delim_whitespace=True)
 PRED_DATA = INDATA[['Ty','cons','sasa','gas_e']]
 
 # Load the model and make the actual prediction
-PREDICTOR = TabularPredictor.load(MODEL_FOLDER_PATH, require_py_version_match=False)
+PREDICTOR = TabularPredictor.load(MODEL_FOLDER_PATH)
 PREDICTIONS = PREDICTOR.predict(PRED_DATA)
 
 # Write out the results
 RESULT = INDATA[['Ty','Resi']].join(PREDICTIONS)
-RESULT.set_axis(["Ty","Resi","Critical"], axis="columns", inplace=True)
-POSITIVES = RESULT.loc[RESULT['Critical'] == 'P']
+POSITIVES = RESULT.loc[RESULT['labels'] == 'P']
 POSITIVES.to_csv(CSV_PREDICTIONS_OUTPUT_PATH,header=None, index=False)

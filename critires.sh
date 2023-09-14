@@ -10,13 +10,12 @@
 # and that you give a percentage for the number of residues to predict
 # e.g. critires.sh 5
 
-export hbplus=/home/programs/hbplus-3.06.linux/hbplus
-export dssp=/home/programs/xssp-3.0.5/bin.linux/mkdssp
 export freesasa=/home/programs/freesasa-2.03/linux/bin/freesasa
 export scripts=../critires_scripts
 export consurf_scripts=../consurf_scripts
-export agpath=$scripts/AutogluonModels/ag-20230913_062913
-source /home/programs/anaconda/linux_202105/init.sh
+export agpath=$scripts/AutogluonModels/ag-20230914_040803
+source /home/programs/anaconda/linux_202307/init.sh
+conda activate ag
 
 # Start off by running checking for missing backbone atoms in the PDB file and running AMBER
 python3 $scripts/check_bb.py input.pdb missing.txt
@@ -52,19 +51,6 @@ touch consurf.txt
 # Sort out the SASA values
 $freesasa --config-file $scripts/protor.config --format=seq post_minix.pdb >| post_mini.sasa
 python3 $scripts/sasa_to_perc.py post_mini.sasa | awk '{print $3", "$4", "$8}' >| post_mini.relsasa
-
-# Prepare a non-H atom version for hbplus
-python3 $scripts/renum_rm_h.py post_minix.pdb post_mini_noh.pdb No
-sed -i -e 's/CYX/CYS/' -e 's/CYM/CYS/' -e 's/HID/HIS/' -e 's/HIE/HIS/' -e 's/HIP/HIS/' post_mini_noh.pdb
-
-# Run HBPLUS - needed for the vdw matrix
-$hbplus post_mini_noh.pdb -h 2.9 -d 4 -N -c
-
-# Run DSSP - needed for 2nd structure
-$dssp -i post_mini_noh.pdb -o post_mini_noh.dssp
-
-## This is for Jon's binding progrect
-#touch wild_bind.txt # needed for checking on binding sites
 
 # Pull all the data togeather, generate the numbering array
 $scripts/set_numbers.sh

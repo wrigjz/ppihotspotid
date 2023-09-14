@@ -7,7 +7,7 @@
 ###################################################################################################
 This is a reimplimentation of CritiRes in python ver 3+, such as anaconda with the autogluon ML library
 
-Requirements are AmberTools, hbplus, FreeSASA and xssp
+Requirements are AmberTools, FreeSASA
 You will also need to provide conservation values for each residues, our conservation code
 can be found at https://github.com/wrigjz/conservation_python
 

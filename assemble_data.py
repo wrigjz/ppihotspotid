@@ -48,7 +48,6 @@ ELE_STAB = [0 for i in range(0, NUM_LINES)]
 POL_STAB = [0 for i in range(0, NUM_LINES)]
 NPL_STAB = [0 for i in range(0, NUM_LINES)]
 CONSURF = [0 for i in range(0, NUM_LINES)]
-DSSP = ["L" for i in range(0, NUM_LINES)]
 GAS_ENE = [0 for i in range(0, NUM_LINES)]
 RANK = [0 for i in range(0, NUM_LINES)]
 HOTSPOT = [0 for i in range(0, NUM_LINES)]
@@ -83,21 +82,6 @@ for LINE in INFILE:
     in1, in2 = [x.strip() for x in LINE.split()]
     resnum = int(in1)
     CONSURF[resnum] = int(in2)
-INFILE.close()
-
-# Now we allocate the DSSP values
-INFILE = open("post_mini_noh.dssp", "r")
-RESFOUND = 0
-for LINE in INFILE:
-    if LINE[5:12] == "RESIDUE": # Look for the word RESIDUE in a sertain position
-        RESFOUND = 1
-        continue
-    if RESFOUND == 1:
-        TMP = LINE[6:11].strip()
-        if TMP.isdigit():
-            LIST = int(LINE[6:11].strip())
-            if LINE[16:17] != " ":
-                DSSP[LIST] = LINE[16:17]
 INFILE.close()
 
 # Now we allocate the energy values
@@ -159,7 +143,7 @@ for k in range(0, 10):
         GRADE[SORTED_GAS[j][0]] = 10 - k # We want most stable to be 10, least to be 1
 
 # Print out the results table
-print("Resi Ty cons   int    vdw    ele    pol    npl   sasa     gas_e  rank grade max min  PDB  DSSP HS")
+print("Resi Ty cons   int    vdw    ele    pol    npl   sasa     gas_e  rank grade max min  PDB   HS")
 for j in range(MIN_RESNUM, MAX_RESNUM+1):
     RES_MAX = GRADE[j] + CONSURF[j]
     RES_MIN = GRADE[j] - CONSURF[j]
@@ -181,4 +165,4 @@ for j in range(MIN_RESNUM, MAX_RESNUM+1):
           "{:6.1f}".format(RELSASA[j]), "{:9.3f}".format(GAS_ENE[j]), \
           "  {:>2}".format(RANK[j]), "   {:>2}".format(GRADE[j]), \
           "{:>3}".format(RES_MAX), "{:>3}".format(RES_MIN), " {:>4}".format(ORIGINAL),\
-          "{:>3}".format(DSSP[j]), "{:>3}".format(HOTSPOT[j]))
+          "{:>3}".format(HOTSPOT[j]))
