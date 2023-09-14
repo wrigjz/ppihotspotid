@@ -5,7 +5,7 @@
 ## to copy, modify and distribute this script but all modifications must be offered
 ## back to the original authors
 ###################################################################################################
-This is a reimplimentation of CritiRes in python ver 3+, such as anaconda
+This is a reimplimentation of CritiRes in python ver 3+, such as anaconda with the autogluon ML library
 
 Requirements are AmberTools, hbplus, FreeSASA and xssp
 You will also need to provide conservation values for each residues, our conservation code

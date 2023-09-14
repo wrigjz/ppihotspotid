@@ -15,7 +15,7 @@ import sys
 #      number.py          - the file containing the hash mapping pdb numbers to amber numbers
 
 # Get the local dircetory and add it to the module search path
-from numbers import NUMBERS
+from res_numbers import RES_NUMBERS
 
 CHAINFILE = open("original_chain.txt")
 for CHAINLINE in CHAINFILE:
@@ -26,7 +26,7 @@ CHAINFILE.close()
 INFILE = open(sys.argv[1], "r")
 for LINE in INFILE:
     resname, resnumber, crititype = [x.strip() for x in LINE.split(",")]
-    ORIGINAL = (NUMBERS.get(resnumber))
+    ORIGINAL = (RES_NUMBERS.get(resnumber))
     if ORIGINAL is None:
         ORIGINAL = "NaN"
     print("{:3s}".format(resname), "{:>4}".format(ORIGINAL), "{:1s}".format(chain), \

@@ -32,7 +32,7 @@
 
 import os.path
 # Get the local dircetory and add it to the module search path
-from numbers import NUMBERS
+from res_numbers import RES_NUMBERS
 
 # Get a line count for the arrays we need
 NUM_LINES = 1
@@ -68,12 +68,12 @@ INFILE.close()
 
 # Now allocate the hotspot residues if the file exists
 # Need a reverse dictionary for this to work:
-NUMBERS_REV = {v:k for k,v in NUMBERS.items()}
+NUMBERS_REV = {v:k for k,v in RES_NUMBERS.items()}
 if os.path.isfile("hotspots.txt"):
     INFILE = open("hotspots.txt", "r")
     for LINE in INFILE:
         resno = LINE.strip()
-        ORIGINAL = (NUMBERS_REV.get(resno))
+        ORIGINAL = (RES_NUMBERS_REV.get(resno))
         HOTSPOT[int(ORIGINAL)] = 1
     INFILE.close()
 
@@ -171,7 +171,7 @@ for j in range(MIN_RESNUM, MAX_RESNUM+1):
         GRADE[j] = 5
         RANK[j] = 5
     RESNUMBER_STR = str(RESNUMBER[j])
-    ORIGINAL = (NUMBERS.get(RESNUMBER_STR))
+    ORIGINAL = (RES_NUMBERS.get(RESNUMBER_STR))
     if ORIGINAL is None:
         ORIGINAL = "NaN"
     print("{:>4}".format(RESNUMBER[j]), "{:>3}".format(RESNAME[j]), \

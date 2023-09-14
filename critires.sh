@@ -15,16 +15,8 @@ export dssp=/home/programs/xssp-3.0.5/bin.linux/mkdssp
 export freesasa=/home/programs/freesasa-2.03/linux/bin/freesasa
 export scripts=../critires_scripts
 export consurf_scripts=../consurf_scripts
-source /home/programs/anaconda/linux_202307/init.sh
-conda activate ag
-
-if [ $# -eq 0 ]
-    then
-        echo "Please give a percentage for residues you want to predict as a total of the chain"
-        echo "If you only want the most and least stable then set the percentage to 0"
-        echo e.g. critires.sh 5
-        exit
-fi
+export agpath=$scripts/AutogluonModels/ag-20230913_062913
+source /home/programs/anaconda/linux_202105/init.sh
 
 # Start off by running checking for missing backbone atoms in the PDB file and running AMBER
 python3 $scripts/check_bb.py input.pdb missing.txt
@@ -78,15 +70,6 @@ $dssp -i post_mini_noh.pdb -o post_mini_noh.dssp
 $scripts/set_numbers.sh
 PYTHONPATH=. python3 $scripts/assemble_data.py >| assemble.txt
 
-# Get the CritiRes stable/unstabla and results in the PDB numbering scheme
-#python3 $scripts/find_stable_unstable.py crit >| results_ambnum.txt
-python3 $scripts/find_stable_unstable_percent.py crit $1 >| results_ambnum.txt
-PYTHONPATH=. python3 $scripts/print_results.py results_ambnum.txt | grep Stable   | sort -g -k 2 >| results.txt
-PYTHONPATH=. python3 $scripts/print_results.py results_ambnum.txt | grep Unstable | sort -g -k 2 >> results.txt
-PYTHONPATH=. python3 $scripts/print_results.py results_ambnum.txt | grep Neighbour   | sort -g -k 2 >> results.txt
-
-# Get the BindRes stable/unstabla and results in the PDB numbering scheme
-python3 $scripts/find_stable_unstable.py bind >| results_bind_ambnum.txt
-PYTHONPATH=. python3 $scripts/print_results.py results_bind_ambnum.txt | grep Stable   | sort -g -k 2 >| results_bind.txt
-PYTHONPATH=. python3 $scripts/print_results.py results_bind_ambnum.txt | grep Unstable | sort -g -k 2 >> results_bind.txt
-PYTHONPATH=. python3 $scripts/print_results.py results_bind_ambnum.txt | grep Bridge   | sort -g -k 2 >> results_bind.txt
+# Get the results in the PDB numbering scheme
+python3 $scripts/scoring.py $agpath >| results_ambnum.txt
+PYTHONPATH=. python3 $scripts/print_results.py results_ambnum.txt | grep -E -v 'ACE|NME' >| results.txt
