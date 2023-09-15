@@ -7,13 +7,11 @@
 ###################################################################################################
 # Simple script to perform a critires job
 # You need to make sure that a input.pdb file exists in the directory
-# and that you give a percentage for the number of residues to predict
-# e.g. critires.sh 5
 
 export freesasa=/home/programs/freesasa-2.03/linux/bin/freesasa
-export scripts=../critires_scripts
-export consurf_scripts=../consurf_scripts
-export agpath=$scripts/AutogluonModels/ag-20230914_040803
+export scripts=/home/programs/critires_scripts
+export consurf_scripts=/home/programs/consurf_scripts
+export agpath=$scripts/AutogluonModels/ag-20230915_030535
 source /home/programs/anaconda/linux_202307/init.sh
 conda activate ag
 
