@@ -9,9 +9,10 @@
 # You need to make sure that a input.pdb file exists in the directory
 
 export freesasa=/home/programs/freesasa-2.03/linux/bin/freesasa
-export scripts=/home/programs/critires_scripts
-export consurf_scripts=/home/programs/consurf_scripts
+export scripts=/home/programs/scripts/critires_scripts
+export consurf_scripts=/home/programs/scripts/consurf_scripts
 export agpath=$scripts/AutogluonModels/ag-20230915_030535
+export dssp=/home/programs/xssp-3.0.5/bin.linux/mkdssp
 source /home/programs/anaconda/linux_202307/init.sh
 conda activate ag
 
@@ -49,6 +50,13 @@ touch consurf.txt
 # Sort out the SASA values
 $freesasa --config-file $scripts/protor.config --format=seq post_minix.pdb >| post_mini.sasa
 python3 $scripts/sasa_to_perc.py post_mini.sasa | awk '{print $3", "$4", "$8}' >| post_mini.relsasa
+
+# Prepare a non-H atom version for dssp
+python3 $scripts/renum_rm_h.py post_minix.pdb post_mini_noh.pdb No
+sed -i -e 's/CYX/CYS/' -e 's/CYM/CYS/' -e 's/HID/HIS/' -e 's/HIE/HIS/' -e 's/HIP/HIS/' post_mini_noh.pdb
+
+# Run DSSP - needed for 2nd structure
+$dssp -i post_mini_noh.pdb -o post_mini_noh.dssp
 
 # Pull all the data togeather, generate the numbering array
 $scripts/set_numbers.sh
