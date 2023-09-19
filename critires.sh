@@ -9,8 +9,8 @@
 # You need to make sure that a input.pdb file exists in the directory
 
 export freesasa=/home/programs/freesasa-2.03/linux/bin/freesasa
-export scripts=/home/programs/scripts/critires_scripts
-export consurf_scripts=/home/programs/scripts/consurf_scripts
+export scripts=/home/programs/critires_scripts
+export consurf_scripts=/home/programs/consurf_scripts
 export agpath=$scripts/AutogluonModels/ag-20230915_030535
 export dssp=/home/programs/xssp-3.0.5/bin.linux/mkdssp
 source /home/programs/anaconda/linux_202307/init.sh
